@@ -1,4 +1,4 @@
-class Board:
+class TicTacToe:
     def __init__(self) -> None:
         self.bit_array = [None for _ in range(9)]
     
@@ -49,7 +49,6 @@ class Board:
             bool: True if the move was made, False otherwise
         """
         
-        moved = False
         # Subtract one to match the index of the array
         row -= 1 
         column -= 1
@@ -58,19 +57,17 @@ class Board:
         if row == 0:
             if self.bit_array[column] == None:
                 self.bit_array[column] = 1
-                moved = True
-            else:
-                print("\nERROR: The position it's already occupied select another")
+                return True
         elif row == 1:
             if self.bit_array[column + row + 2] == None:
                 self.bit_array[column + row + 2] = 1
-                moved = True
-            else:
-                print("\nERROR: The position it's already occupied select another")
+                return True
         elif row == 2:
             if self.bit_array[column + row + 4] == None:
                 self.bit_array[column + row + 4] = 1
-                moved = True
-            else:
-                print("\nERROR: The position it's already occupied select another")
-        return moved
+                return True
+        return False
+
+    
+    def make_move_IA(self) -> bool:
+        pass

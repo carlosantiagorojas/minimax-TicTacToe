@@ -1,12 +1,24 @@
-from board import Board
+from tic_tac_toe import TicTacToe
 
 
-def main():
-    board = Board()
-    board.show_tic_tac_toe()
-    get_move(board, False)
+def main() -> None:
+    """Start the TicTacToe game.
 
-def get_move(board: Board, finished: bool) -> None:
+    This function creates a new game, displays the initial state of the game,
+    and then prompts the user to make a move.
+    """
+    game = TicTacToe()
+    game.show_tic_tac_toe()
+    get_move(game, False)
+
+
+def get_move(game: TicTacToe, finished: bool) -> None:
+    """Get the move of the player and call the AI next to make another move
+
+    Args:
+        game (TicTacToe): The TicTacToe object
+        finished (bool): If the game it's finshed
+    """
     while not finished:
         try:
             correct_col = False
@@ -22,9 +34,13 @@ def get_move(board: Board, finished: bool) -> None:
                 correct_col = True
 
             if correct_col and correct_row:
-                board.make_move_player(row, column)
-                board.show_tic_tac_toe()
-
+                moved = game.make_move_player(row, column)
+                game.show_tic_tac_toe()
+                if moved:
+                    game.make_move_IA()
+                else:
+                    print("\nERROR: The position it's already occupied select another")
+                    
             if not correct_row and not correct_col:
                 print("ERROR: Type the number of the row and column in the specified range")
             elif not correct_row:
