@@ -1,3 +1,5 @@
+import random
+
 class TicTacToe:
     def __init__(self) -> None:
         self.bit_array = [None for _ in range(9)]
@@ -71,12 +73,17 @@ class TicTacToe:
 
     
     def make_move_IA(self) -> bool:
-        # self.get_possible_moves()
-        pass
+        p_moves_index = self.get_possible_moves()
+        best_move_index = random.choice(p_moves_index)
+        self.bit_array[best_move_index] = 0
+        
+        print("\nComputer move: \n")
+        self.show_tic_tac_toe()
     
     
-    # def get_possible_moves(self) -> list:
-    #     possible_moves = []
-    #     for i in self.array_length:
-    #         if self.bit_array[i] == None:
-    #             possible_moves.append(i)
+    def get_possible_moves(self) -> list:
+        possible_moves = []
+        for i in range(0, self.array_length):
+            if self.bit_array[i] == None:
+                possible_moves.append(i)
+        return possible_moves

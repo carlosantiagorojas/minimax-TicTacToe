@@ -20,30 +20,12 @@ def main() -> None:
     game_control(game)
     
 
-def handle_move(game: TicTacToe) -> bool:
-    """Handles the move base on the moved of the user
-
-    Args:
-        game (TicTacToe): The TiacTacToe object
-
-    Returns:
-        bool: False if the user wants to exit, True otherwise
-    """
-    status, row, column = get_move()
-    if status == "exit":
-        return False
-    elif status == "continue":
-        moved = game.make_move_user(row, column)
-        if not moved:
-            print("\nERROR: The position it's already occupied select another")
-    return True
-
 def game_control(game: TicTacToe) -> None:
     """Control the order of who plays first the user or the computer and displays
     the TicTacToe board
 
     Args:
-        game (TicTacToe): The TiacTacToe object
+        game (TicTacToe): The TicTacToe object
     """
     counter = 1
     while True:
@@ -51,21 +33,24 @@ def game_control(game: TicTacToe) -> None:
             counter += 1
 
         if counter % 2 == 1:
-            if not handle_move(game):
+            if not make_move(game):
                 break
             game.show_tic_tac_toe()
             game.make_move_IA()
         else:
             game.make_move_IA()
             game.show_tic_tac_toe()
-            if not handle_move(game):
+            if not make_move(game):
                 break
 
-def get_move() -> tuple[str, int, int]:
+def make_move(game: TicTacToe) -> bool:
     """Get the move of the user and call the AI next to make another move
-
+    
+    Args:
+        game (TicTacToe): The TicTacToe object
+        
     Returns:
-        Tuple[str, Optional[int], Optional[int]]: A tuple containing the exit status, row, and column of the user move
+        bool: True if the user make a move. False if there is something wrong with the input
     """
     while True:
         try:
@@ -75,26 +60,30 @@ def get_move() -> tuple[str, int, int]:
             user_input = input(
                 "\nType the number of the row and column (1 to 3) separated by a space\nor 'exit' to quit: ")
             print()
+            
             if user_input.lower() == "exit":
-                return "exit", None, None
+                return False
+            else: 
+                row, column = map(int, user_input.split())
 
-            row, column = map(int, user_input.split())
+                if 1 <= row <= 3:
+                    correct_row = True
+                if 1 <= column <= 3:
+                    correct_col = True
 
-            if 1 <= row <= 3:
-                correct_row = True
-            if 1 <= column <= 3:
-                correct_col = True
-
-            if correct_col and correct_row:
-                return "continue", row, column
-
-            if not correct_row and not correct_col:
-                print("ERROR: Type the number of the row and column in the specified range")
-            elif not correct_row:
-                print("ERROR: Type the number of the row in the specified range")
-            elif not correct_col:
-                print("ERROR: Type the number of the column in the specified range")
-
+                if not correct_row and not correct_col:
+                    print("ERROR: Type the number of the row and column in the specified range")
+                elif not correct_row:
+                    print("ERROR: Type the number of the row in the specified range")
+                elif not correct_col:
+                    print("ERROR: Type the number of the column in the specified range")
+                else:                
+                    moved = game.make_move_user(row, column)
+                    if not moved:
+                        print("\nERROR: The position it's already occupied select another\n")
+                        game.show_tic_tac_toe()
+                    else:
+                        return True
         except ValueError:
             print("ERROR: Type in the correct format")
         
