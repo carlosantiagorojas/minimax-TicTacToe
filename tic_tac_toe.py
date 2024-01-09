@@ -1,6 +1,8 @@
 class TicTacToe:
     def __init__(self) -> None:
         self.bit_array = [None for _ in range(9)]
+        self.array_length = len(self.bit_array)
+        self.finished = False
     
     
     def __str__(self) -> str:
@@ -17,8 +19,7 @@ class TicTacToe:
         
         None values are printed as spaces, 1 as X and 0 as O
         """
-        print("\n")
-        for i in range(0, len(self.bit_array)):
+        for i in range(0, self.array_length):
             if i % 3 == 2:
                 if self.bit_array[i] == 1:
                     print('X')
@@ -38,8 +39,8 @@ class TicTacToe:
                     print(' ', end=' | ')
     
     
-    def make_move_player(self, row: int, column: int) -> bool:
-        """The player make a moved based on the row and the column in the array
+    def make_move_user(self, row: int, column: int) -> bool:
+        """Make a move in the TicTacToe based on the row and the column in the array
 
         Args:
             row (int): Number of the row
@@ -70,4 +71,12 @@ class TicTacToe:
 
     
     def make_move_IA(self) -> bool:
+        # self.get_possible_moves()
         pass
+    
+    
+    # def get_possible_moves(self) -> list:
+    #     possible_moves = []
+    #     for i in self.array_length:
+    #         if self.bit_array[i] == None:
+    #             possible_moves.append(i)
