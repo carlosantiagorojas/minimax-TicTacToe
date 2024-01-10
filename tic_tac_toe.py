@@ -75,11 +75,13 @@ class TicTacToe:
     def make_move_IA(self) -> bool:
         p_moves_index = self.get_possible_moves()
         # best_move_index = random.choice(p_moves_index)
-        best_move_index = random.randint(0,3)
+        best_move_index = None
+        for i in range(len(p_moves_index)):
+            if p_moves_index[i] == 0 or p_moves_index[i] == 1 or p_moves_index[i] == 2:
+                best_move_index = i
         self.bit_array[best_move_index] = 0
         
         print("\nComputer move: \n")
-        self.show_tic_tac_toe()
     
     
     def get_possible_moves(self) -> list:
@@ -135,6 +137,7 @@ class TicTacToe:
         if status == ' ':
             return None
         return status
+    
     
     def verify_finish(self) -> None:
         """Verify that the game is finshed or not

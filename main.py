@@ -33,20 +33,23 @@ def game_control(game: TicTacToe) -> None:
             # Reset the game and increment the counter to change who play first
             game.reset_game()
             counter += 1
-        
+            print()
+            game.show_tic_tac_toe()
+            
         # If the user moves
         if counter % 2 == 1:
             if not make_move(game):
                 break
-            
             game.show_tic_tac_toe()
             game.verify_finish()
-            
+
             if not game.finished:
                 game.make_move_IA()
+                game.show_tic_tac_toe()
                 game.verify_finish()
         else:
             game.make_move_IA()
+            game.show_tic_tac_toe()
             game.verify_finish()
             
             if not game.finished:
@@ -98,6 +101,7 @@ def make_move(game: TicTacToe) -> bool:
                         return True
         except ValueError:
             print("ERROR: Type in the correct format")
+        
         
 if __name__ == "__main__":
     main()
