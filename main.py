@@ -30,18 +30,30 @@ def game_control(game: TicTacToe) -> None:
     counter = 1
     while True:
         if game.finished:
+            # Reset the game and increment the counter to change who play first
+            game.reset_game()
             counter += 1
-
+        
+        # If the user moves
         if counter % 2 == 1:
             if not make_move(game):
                 break
+            
             game.show_tic_tac_toe()
-            game.make_move_IA()
+            game.verify_finish()
+            
+            if not game.finished:
+                game.make_move_IA()
+                game.verify_finish()
         else:
             game.make_move_IA()
-            game.show_tic_tac_toe()
-            if not make_move(game):
-                break
+            game.verify_finish()
+            
+            if not game.finished:
+                if not make_move(game):
+                    break
+                game.show_tic_tac_toe()
+                game.verify_finish()
 
 def make_move(game: TicTacToe) -> bool:
     """Get the move of the user and call the AI next to make another move

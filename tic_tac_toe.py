@@ -74,7 +74,8 @@ class TicTacToe:
     
     def make_move_IA(self) -> bool:
         p_moves_index = self.get_possible_moves()
-        best_move_index = random.choice(p_moves_index)
+        # best_move_index = random.choice(p_moves_index)
+        best_move_index = random.randint(0,3)
         self.bit_array[best_move_index] = 0
         
         print("\nComputer move: \n")
@@ -82,8 +83,70 @@ class TicTacToe:
     
     
     def get_possible_moves(self) -> list:
+        """Get the list of the possible moves
+
+        Returns:
+            list: List that have all the possible moves
+        """
         possible_moves = []
         for i in range(0, self.array_length):
             if self.bit_array[i] == None:
                 possible_moves.append(i)
         return possible_moves
+    
+    
+    def reset_game(self) -> None:
+        """Reset the values of the array and set the game unfinished to start another
+        """
+        for i in range(self.array_length):
+            self.bit_array[i] = None
+        self.finished = False
+            
+    
+    def verify_status(self) -> str:
+        """Verify the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
+
+        Returns:
+            str: '1' if the user wins (X), '0' if the computer wins (O), 
+            'tie' if it's a tie and None if unfinished
+        """
+        status = ' '
+    
+        # Verify all the rows
+        char_row = 0
+        temp = None
+        for i in range(self.array_length): 
+            # If the current character is the same as the previous and is not noe
+            if self.bit_array[i] == temp and self.bit_array[i] is not None:
+                char_row += 1
+            
+            # Save the previous character
+            temp = self.bit_array[i]
+            
+            # If are three characters in a row
+            if char_row == 2:
+                status = self.bit_array[i]
+            
+            # Reset in the last character of the row
+            if i == 2 or i == 5:
+                char_row = 0
+                temp = None
+                
+        if status == ' ':
+            return None
+        return status
+    
+    def verify_finish(self) -> None:
+        """Verify that the game is finshed or not
+        """
+        result = self.verify_status()
+        if result is not None:
+            self.finished = True
+            if result == 1:
+                print("\nGame finished X wins!")
+            elif result == 0:
+                print("\nGame finished O wins!")
+            else:
+                print("\nGame finished in tie!")
+        else:
+            pass
