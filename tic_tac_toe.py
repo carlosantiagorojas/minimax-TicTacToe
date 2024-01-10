@@ -81,7 +81,7 @@ class TicTacToe:
         print("\nComputer move: \n")
     
     
-    def get_possible_moves(self) -> Union[str, int, None]:
+    def get_possible_moves(self) -> list:
         """Get the list of the possible moves
 
         Returns:
@@ -102,11 +102,11 @@ class TicTacToe:
         self.finished = False
             
     
-    def verify_status(self) -> str:
+    def verify_status(self) -> Union[str, int, None]:
         """Verify the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
 
         Returns:
-            str: '1' if the user wins (X), '0' if the computer wins (O), 
+            Union[str, int, None]: 1 if the user wins (X), 0 if the computer wins (O), 
             'tie' if it's a tie and None if unfinished
         """
         
@@ -154,6 +154,9 @@ class TicTacToe:
                 if (self.bit_array[i] == self.bit_array[i + 2] and 
                     self.bit_array[i + 2] == self.bit_array[i + 4]):
                     return self.bit_array[i]
+                
+        if all(character is not None for character in self.bit_array):
+            return "tie"
                 
         # If the game it's not finished return None
         return None
