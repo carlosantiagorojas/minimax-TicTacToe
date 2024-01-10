@@ -1,4 +1,5 @@
 import random
+from typing import Union
 
 class TicTacToe:
     def __init__(self) -> None:
@@ -74,18 +75,13 @@ class TicTacToe:
     
     def make_move_AI(self) -> bool:
         p_moves_index = self.get_possible_moves()
-        # best_move_index = random.choice(p_moves_index)
-        best_move_index = None
-        # if self.bit_array[1] == None:
-        #     self.bit_array[1] = 0
-        # elif self.bit_array[4] == None:
-        #     self.bit_array[4] = 0
-        # elif self.bit_array[7] == None:
-        #     self.bit_array[7] = 0
+        best_move_index = random.choice(p_moves_index)
+        self.bit_array[best_move_index] = 0
+        
         print("\nComputer move: \n")
     
     
-    def get_possible_moves(self) -> list:
+    def get_possible_moves(self) -> Union[str, int, None]:
         """Get the list of the possible moves
 
         Returns:
@@ -114,13 +110,14 @@ class TicTacToe:
             'tie' if it's a tie and None if unfinished
         """
         
-        # Verify the rows
-        
         char_row = 0
         temp = None
         
         for i in range(self.array_length): 
-            # If the current character is the same as the previous and is not noe
+            
+            # Verify the rows
+             
+            # If the current character is the same as the previous and is not none
             if self.bit_array[i] == temp and self.bit_array[i] is not None:
                 char_row += 1
             
@@ -135,20 +132,29 @@ class TicTacToe:
             if i == 2 or i == 5:
                 char_row = 0
                 temp = None
-        
-        # Verify the columns
-        
-        for i in range(0, 3):
-            # print(i, self.bit_array[i], self.bit_array[i + 3], self.bit_array[i + 6])
-            if self.bit_array[i] is not None:
-                if self.bit_array[i] == self.bit_array[i + 3] and self.bit_array[i + 3] == self.bit_array[i + 6]:
-                    return self.bit_array[i]
-
             
-        # Verify the diagonals
-        
-        
-        
+            # Verify the columns
+            
+            if i <= 2:        
+                if self.bit_array[i] is not None:
+                    # If a column contains the same character
+                    if (self.bit_array[i] == self.bit_array[i + 3] and 
+                        self.bit_array[i + 3] == self.bit_array[i + 6]):
+                        return self.bit_array[i]
+            
+            # Verify the diagonals
+
+            if i == 0:
+                # If the diagonal from top left to bottom right contains the same character
+                if (self.bit_array[i] == self.bit_array[i + 4] and 
+                    self.bit_array[i + 4] == self.bit_array[i + 8]):
+                    return self.bit_array[i]
+            elif i == 2:
+                # If the diagonal from top right to bottom left contains the same character
+                if (self.bit_array[i] == self.bit_array[i + 2] and 
+                    self.bit_array[i + 2] == self.bit_array[i + 4]):
+                    return self.bit_array[i]
+                
         # If the game it's not finished return None
         return None
     
@@ -165,5 +171,3 @@ class TicTacToe:
                 print("\nGame finished O wins!")
             else:
                 print("\nGame finished in tie!")
-        else:
-            pass
