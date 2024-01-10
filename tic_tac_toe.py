@@ -72,15 +72,16 @@ class TicTacToe:
         return False
 
     
-    def make_move_IA(self) -> bool:
+    def make_move_AI(self) -> bool:
         p_moves_index = self.get_possible_moves()
         # best_move_index = random.choice(p_moves_index)
         best_move_index = None
-        for i in range(len(p_moves_index)):
-            if p_moves_index[i] == 0 or p_moves_index[i] == 1 or p_moves_index[i] == 2:
-                best_move_index = i
-        self.bit_array[best_move_index] = 0
-        
+        # if self.bit_array[1] == None:
+        #     self.bit_array[1] = 0
+        # elif self.bit_array[4] == None:
+        #     self.bit_array[4] = 0
+        # elif self.bit_array[7] == None:
+        #     self.bit_array[7] = 0
         print("\nComputer move: \n")
     
     
@@ -112,11 +113,12 @@ class TicTacToe:
             str: '1' if the user wins (X), '0' if the computer wins (O), 
             'tie' if it's a tie and None if unfinished
         """
-        status = ' '
-    
-        # Verify all the rows
+        
+        # Verify the rows
+        
         char_row = 0
         temp = None
+        
         for i in range(self.array_length): 
             # If the current character is the same as the previous and is not noe
             if self.bit_array[i] == temp and self.bit_array[i] is not None:
@@ -127,16 +129,28 @@ class TicTacToe:
             
             # If are three characters in a row
             if char_row == 2:
-                status = self.bit_array[i]
+                return self.bit_array[i]
             
             # Reset in the last character of the row
             if i == 2 or i == 5:
                 char_row = 0
                 temp = None
-                
-        if status == ' ':
-            return None
-        return status
+        
+        # Verify the columns
+        
+        for i in range(0, 3):
+            # print(i, self.bit_array[i], self.bit_array[i + 3], self.bit_array[i + 6])
+            if self.bit_array[i] is not None:
+                if self.bit_array[i] == self.bit_array[i + 3] and self.bit_array[i + 3] == self.bit_array[i + 6]:
+                    return self.bit_array[i]
+
+            
+        # Verify the diagonals
+        
+        
+        
+        # If the game it's not finished return None
+        return None
     
     
     def verify_finish(self) -> None:

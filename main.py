@@ -44,11 +44,11 @@ def game_control(game: TicTacToe) -> None:
             game.verify_finish()
 
             if not game.finished:
-                game.make_move_IA()
+                game.make_move_AI()
                 game.show_tic_tac_toe()
                 game.verify_finish()
         else:
-            game.make_move_IA()
+            game.make_move_AI()
             game.show_tic_tac_toe()
             game.verify_finish()
             
@@ -58,6 +58,7 @@ def game_control(game: TicTacToe) -> None:
                 game.show_tic_tac_toe()
                 game.verify_finish()
 
+ 
 def make_move(game: TicTacToe) -> bool:
     """Get the move of the user and call the AI next to make another move
     
