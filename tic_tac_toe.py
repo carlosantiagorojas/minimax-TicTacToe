@@ -133,7 +133,8 @@ class TicTacToe:
     
     
     def reset_game(self) -> None:
-        """Reset the values of the list and set the game unfinished to start another."""
+        """Reset the values of the list and set the game 
+        unfinished to start another."""
         for i in range(self.list_length):
             self.bit_list[i] = None
         self.finished = False
@@ -150,6 +151,43 @@ class TicTacToe:
             int: Returns 0 if the computer wins (O).
             str: Returns 'tie' if it's a tie.
             None: Returns None if the game is unfinished.
+        """
+        # Verify the rows
+        result = self.check_rows()
+        if result is not None:
+            return result
+        
+        # Verify the columns
+        result = self.check_columns()
+        if result is not None:
+            return result
+            
+        # Verify the diagonals
+        # Top-left to bottom-right
+        result = self.check_diagonal(0, 4)  
+        if result is not None:
+            return result
+        # Top-right to bottom-left
+        result = self.check_diagonal(2, 2)  
+        if result is not None:
+            return result
+        
+        # Verify tie
+        result = self.check_tie()
+        if result is not None:
+            return result
+                
+        # If the game it's not finished return None
+        return None
+
+
+    def check_rows(self) -> Union[int, None]:
+        """Check the rows for a win.
+
+        Returns:
+            int: Returns 1 if the user wins (X).
+            int: Returns 0 if the computer wins (O).
+            None: Returns None if no win is found.
         """
         char_row = 0
         temp = None
@@ -172,32 +210,26 @@ class TicTacToe:
             if i == 2 or i == 5:
                 char_row = 0
                 temp = None
-            
-            # Verify the columns
-            if i <= 2:        
-                if self.bit_list[i] is not None:
-                    # If a column contains the same character
-                    if (self.bit_list[i] == self.bit_list[i + 3] and 
-                        self.bit_list[i + 3] == self.bit_list[i + 6]):
-                        return self.bit_list[i]
-            
-            # Verify the diagonals
-            # Top-left to bottom-right
-            result = self.check_diagonal(0, 4)  
-            if result is not None:
-                return result
-            # Top-right to bottom-left
-            result = self.check_diagonal(2, 2)  
-            if result is not None:
-                return result
-
-        # Check for tie if all the movements have already been made 
-        if all(character is not None for character in self.bit_list):
-            return "tie"
                 
-        # If the game it's not finished return None
         return None
- 
+    
+
+    def check_columns(self) -> Union[int, None]:
+        """Check the columns for a win.
+
+        Returns:
+            int: Returns 1 if the user wins (X).
+            int: Returns 0 if the computer wins (O).
+            None: Returns None if no win is found.
+        """
+        for i in range(3):
+            if self.bit_list[i] is not None:
+                # If a column contains the same character
+                if self.bit_list[i] == self.bit_list[i + 3] == self.bit_list[i + 6]:
+                    return self.bit_list[i]
+        return None
+
+
     def check_diagonal(self, index_start: int, step: int) -> Union[int, None]:
         """Check if all elements in a diagonal are the same and not None.
 
@@ -206,16 +238,31 @@ class TicTacToe:
             step (int): The step to add to the index.
 
         Returns:
-            int: The value of the elements in the diagonal if they are all the same and not None.
-            None: If the elements in the diagonal are not all the same or a element is None.
+            int: The value of the elements in the diagonal if they are all the 
+                 same and not None.
+            None: If the elements in the diagonal are not all the same 
+                  or a element is None.
         """
         if (self.bit_list[index_start] 
             == self.bit_list[index_start + step]
             == self.bit_list[index_start + step * 2] is not None):
             return self.bit_list[index_start]
         return None
+    
+    
+    def check_tie(self) -> Union[str, None]:
+        """Check for a tie
 
-
+        Returns:
+           str: 'tie' if all the available movements have already been made and 
+                 no winner found.
+           None: if there still are available movements.
+        """
+        if all(character is not None for character in self.bit_list):
+            return "tie"
+        return None
+    
+    
     def check_game_finished(self) -> None:
         """Check if the game is finished or not."""
         result = self.check_game_status()
