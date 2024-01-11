@@ -16,7 +16,7 @@ def main() -> None:
     -----------------------------------------------------------------
     """)
     game = TicTacToe()
-    game.show_tic_tac_toe()
+    game.show_tic_tac_toe(True, None)
     game_control(game)
     
 
@@ -34,28 +34,28 @@ def game_control(game: TicTacToe) -> None:
             game.reset_game()
             counter += 1
             print()
-            game.show_tic_tac_toe()
+            game.show_tic_tac_toe(True, None)
             
         # If the user moves
         if counter % 2 == 1:
             if not make_move(game):
                 break
-            game.show_tic_tac_toe()
+            game.show_tic_tac_toe(True, None)
             game.verify_finish()
 
             if not game.finished:
                 game.make_move_AI()
-                game.show_tic_tac_toe()
+                game.show_tic_tac_toe(True, None)
                 game.verify_finish()
         else:
             game.make_move_AI()
-            game.show_tic_tac_toe()
+            game.show_tic_tac_toe(True, None)
             game.verify_finish()
             
             if not game.finished:
                 if not make_move(game):
                     break
-                game.show_tic_tac_toe()
+                game.show_tic_tac_toe(True, None)
                 game.verify_finish()
 
  

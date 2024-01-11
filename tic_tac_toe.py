@@ -1,5 +1,7 @@
 import random
-from typing import Union
+from typing import Union, Optional
+from position import Position
+
 
 class TicTacToe:
     def __init__(self) -> None:
@@ -12,35 +14,54 @@ class TicTacToe:
         """Print the current state of the bit list
 
         Returns:
-            str: The list of bits
+            str: The list of the bits
         """
         return f"{self.bit_list}"
     
     
-    def show_tic_tac_toe(self) -> None:
+    def show_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
         """Print the tic-tac-toe board to the console.
         
         None values are printed as spaces, 1 as X and 0 as O
         """
-        for i in range(0, self.list_length):
-            if i % 3 == 2:
-                if self.bit_list[i] == 1:
-                    print('X')
-                elif self.bit_list[i] == 0:
-                    print('O')
+        if main_game:
+            for i in range(0, self.list_length):
+                if i % 3 == 2:
+                    if self.bit_list[i] == 1:
+                        print('X')
+                    elif self.bit_list[i] == 0:
+                        print('O')
+                    else:
+                        print(' ')
+
+                    if i != len(self.bit_list) - 1:
+                        print('---------')
                 else:
-                    print(' ')
-                    
-                if i != len(self.bit_list) - 1:
-                    print('---------')
-            else:
-                if self.bit_list[i] == 1:
-                    print('X', end=' | ')
-                elif self.bit_list[i] == 0:
-                    print('O', end=' | ')
+                    if self.bit_list[i] == 1:
+                        print('X', end=' | ')
+                    elif self.bit_list[i] == 0:
+                        print('O', end=' | ')
+                    else:
+                        print(' ', end=' | ')
+        else:
+            for i in range(0, position.pos_length):
+                if i % 3 == 2:
+                    if position.pos_list[i] == 1:
+                        print('X')
+                    elif position.pos_list[i] == 0:
+                        print('O')
+                    else:
+                        print(' ')
+
+                    if i != position.pos_length - 1:
+                        print('---------')
                 else:
-                    print(' ', end=' | ')
-    
+                    if position.pos_list[i] == 1:
+                        print('X', end=' | ')
+                    elif position.pos_list[i] == 0:
+                        print('O', end=' | ')
+                    else:
+                        print(' ', end=' | ')
     
     def make_move_user(self, row: int, column: int) -> bool:
         """Make a move in the TicTacToe based on the row and the column in the list
@@ -74,7 +95,12 @@ class TicTacToe:
 
     
     def make_move_AI(self) -> bool:
+        position = Position(self.bit_list)
         p_moves_index = self.get_possible_moves()
+        position.create_childs(list(p_moves_index))
+        print(position.get_childs_length())
+        position.show_childs()
+        
         best_move_index = random.choice(p_moves_index)
         self.bit_list[best_move_index] = 0
         
@@ -154,7 +180,8 @@ class TicTacToe:
                 if (self.bit_list[i] == self.bit_list[i + 2] and 
                     self.bit_list[i + 2] == self.bit_list[i + 4]):
                     return self.bit_list[i]
-                
+        
+        # Check for tie if all the movements have already been made 
         if all(character is not None for character in self.bit_list):
             return "tie"
                 
@@ -174,3 +201,13 @@ class TicTacToe:
                 print("\nGame finished O wins!")
             else:
                 print("\nGame finished in tie!")
+    
+    def evaluation(self) -> int:
+        """Do the evaluation of the position
+
+        Returns:
+            int: Result value of the evaluation
+        """
+        
+        # About to get three in a row
+        
