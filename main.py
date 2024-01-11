@@ -16,7 +16,7 @@ def main() -> None:
     -----------------------------------------------------------------
     """)
     game = TicTacToe()
-    game.show_tic_tac_toe(True, None)
+    game.print_tic_tac_toe(True, None)
     game_control(game)
     
 
@@ -34,29 +34,29 @@ def game_control(game: TicTacToe) -> None:
             game.reset_game()
             counter += 1
             print()
-            game.show_tic_tac_toe(True, None)
+            game.print_tic_tac_toe(True, None)
             
         # If the user moves
         if counter % 2 == 1:
             if not make_move(game):
                 break
-            game.show_tic_tac_toe(True, None)
-            game.verify_finish()
+            game.print_tic_tac_toe(True, None)
+            game.check_game_finished()
 
             if not game.finished:
-                game.make_move_AI()
-                game.show_tic_tac_toe(True, None)
-                game.verify_finish()
+                game.make_ai_move()
+                game.print_tic_tac_toe(True, None)
+                game.check_game_finished()
         else:
-            game.make_move_AI()
-            game.show_tic_tac_toe(True, None)
-            game.verify_finish()
+            game.make_ai_move()
+            game.print_tic_tac_toe(True, None)
+            game.check_game_finished()
             
             if not game.finished:
                 if not make_move(game):
                     break
-                game.show_tic_tac_toe(True, None)
-                game.verify_finish()
+                game.print_tic_tac_toe(True, None)
+                game.check_game_finished()
 
  
 def make_move(game: TicTacToe) -> bool:
@@ -97,7 +97,7 @@ def make_move(game: TicTacToe) -> bool:
                     moved = game.make_move_user(row, column)
                     if not moved:
                         print("\nERROR: The position it's already occupied select another\n")
-                        game.show_tic_tac_toe()
+                        game.print_tic_tac_toe()
                     else:
                         return True
         except ValueError:

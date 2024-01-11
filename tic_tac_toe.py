@@ -19,7 +19,7 @@ class TicTacToe:
         return f"{self.bit_list}"
     
     
-    def show_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
+    def print_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
         """Print the tic-tac-toe board to the console.
         
         None values are printed as spaces, 1 as X and 0 as O
@@ -94,12 +94,12 @@ class TicTacToe:
         return False
 
     
-    def make_move_AI(self) -> bool:
+    def make_ai_move(self) -> bool:
         position = Position(self.bit_list)
         p_moves_index = self.get_possible_moves()
-        position.create_childs(list(p_moves_index))
-        print(position.get_childs_length())
-        position.show_childs()
+        position.create_children(list(p_moves_index))
+        print(position.get_children_length())
+        position.print_children()
         
         best_move_index = random.choice(p_moves_index)
         self.bit_list[best_move_index] = 0
@@ -128,14 +128,13 @@ class TicTacToe:
         self.finished = False
             
     
-    def verify_status(self) -> Union[str, int, None]:
-        """Verify the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
+    def check_game_status(self) -> Union[str, int, None]:
+        """Check the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
 
         Returns:
             Union[str, int, None]: 1 if the user wins (X), 0 if the computer wins (O), 
             'tie' if it's a tie and None if unfinished
         """
-        
         char_row = 0
         temp = None
         
@@ -189,10 +188,10 @@ class TicTacToe:
         return None
     
     
-    def verify_finish(self) -> None:
-        """Verify that the game is finshed or not
+    def check_game_finished(self) -> None:
+        """Check if the game is finished or not
         """
-        result = self.verify_status()
+        result = self.check_game_status()
         if result is not None:
             self.finished = True
             if result == 1:
@@ -201,6 +200,7 @@ class TicTacToe:
                 print("\nGame finished O wins!")
             else:
                 print("\nGame finished in tie!")
+    
     
     def evaluation(self) -> int:
         """Do the evaluation of the position

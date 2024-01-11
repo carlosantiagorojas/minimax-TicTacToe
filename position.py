@@ -6,7 +6,7 @@ class Position:
         self.pos_list = bit_list
         self.pos_length = len(self.pos_list)
         self.eval_value = 0
-        self.childs: List[Position] = []
+        self.children: List[Position] = []
 
 
     def __str__(self) -> str:
@@ -18,8 +18,8 @@ class Position:
         return f"{self.pos_list}"
     
     
-    def create_childs(self, p_moves_index: list) -> None:
-        """Crate the childs of the position 
+    def create_children(self, p_moves_index: list) -> None:
+        """Crate the children of the position 
 
         Args:
             p_moves_index (list): All the possible moves
@@ -33,14 +33,21 @@ class Position:
             child = Position(pos_copy)
             
             # Add the new child to the list of children
-            self.childs.append(child)
+            self.children.append(child)
             
             # Remove the move that has been performed
             p_moves_index.pop(0)
     
-    def get_childs_length(self) -> int:
-        return len(self.childs)
+    def get_children_length(self) -> int:
+        """Get the number of children
 
-    def show_childs(self) -> None:
-        for child in self.childs:
+        Returns:
+            int: Number of children
+        """
+        return len(self.children)
+
+    def print_children(self) -> None:
+        """Show each child list of the position
+        """
+        for child in self.children:
             print(child)
