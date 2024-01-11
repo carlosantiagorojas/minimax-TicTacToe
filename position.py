@@ -10,13 +10,12 @@ class Position:
 
 
     def __str__(self) -> str:
-        """ Print the current state of the position
+        """Print the current state of the position.
 
         Returns:
-            str: The list of the position
+            str: The list of the position.
         """
         return f"{self.pos_list}"
-    
     
     def create_children(self, p_moves_index: list) -> None:
         """ Create the children of the position 
@@ -39,26 +38,25 @@ class Position:
             p_moves_index.pop(0)
 
     def get_children(self) -> List["Position"]:
-        """ Get the children list
+        """Get the children list.
 
         Returns:
-            List["Position"]: The list of the children
+            List["Position"]: The list of the children.
         """
         return self.children
 
 
     def get_children_length(self) -> int:
-        """ Get the number of children
+        """Get the number of children.
 
         Returns:
-            int: Number of children
+            int: Number of children.
         """
         return len(self.children)
 
 
     def print_children(self) -> None:
-        """ Show each child list of the position
-        """
+        """Show each child list of the position."""
         for child in self.children:
             print(child)
             

@@ -2,10 +2,10 @@ from tic_tac_toe import TicTacToe
 
 
 def main() -> None:
-    """ Start the TicTacToe game.
+    """Start the TicTacToe game.
 
-        This function creates a new game, displays the initial state of the game,
-        and then prompts the user to make a move.
+    This function creates a new game, displays the initial state of the game
+    and then prompts the user to make a move.
     """
     print("""
     -----------------------------------------------------------------
@@ -21,11 +21,10 @@ def main() -> None:
     
 
 def game_control(game: TicTacToe) -> None:
-    """ Control the order of who plays first the user or the computer and displays
-    the TicTacToe board
+    """Control the order of who plays first and displays the TicTacToe board.
 
     Args:
-        game (TicTacToe): The TicTacToe object
+        game (TicTacToe): The TicTacToe object.
     """
     counter = 1
     while True:
@@ -33,7 +32,6 @@ def game_control(game: TicTacToe) -> None:
             # Reset the game and increment the counter to change who play first
             game.reset_game()
             counter += 1
-            print()
             game.print_tic_tac_toe(True, None)
             
         # If the user moves
@@ -60,7 +58,7 @@ def game_control(game: TicTacToe) -> None:
 
  
 def make_move(game: TicTacToe) -> bool:
-    """ Get the move of the user and call the AI next to make another move
+    """Get the move of the user and call the AI next to make another move.
     
     Args:
         game (TicTacToe): The TicTacToe object
