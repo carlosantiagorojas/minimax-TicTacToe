@@ -3,6 +3,14 @@ from typing import List
 
 class Position:
     def __init__(self, bit_list: list) -> None:
+        """Intialize a new position
+
+        Copy the current position of the game and create an empty list of children
+        that represent the possible moves that can be made in the position.
+        
+        Args:
+            bit_list (list): The current position of the TicTacToe game.
+        """
         self.pos_list = bit_list
         self.pos_length = len(self.pos_list)
         self.eval_value = 0

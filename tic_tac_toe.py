@@ -1,10 +1,12 @@
-import random
 from typing import Union, Optional
 from position import Position
 
-
 class TicTacToe:
     def __init__(self) -> None:
+        """Initialize a new TicTacToe game.
+        
+        An empty list filled with None represents the TicTacToe.
+        """
         self.bit_list = [None for _ in range(9)]
         self.list_length = len(self.bit_list)
         self.finished = False
@@ -23,6 +25,10 @@ class TicTacToe:
         """Print the tic-tac-toe board to the console. 
         
         None values are printed as spaces, 1 as X and 0 as O.
+        
+        Args:
+            main_game (bool): True if want to print the TicTacToe main game
+            position Optional[Position]: Pass antoher position to print
         """
         if main_game:
             print()
@@ -65,8 +71,49 @@ class TicTacToe:
                     else:
                         print(' ', end=' | ')
 
+            
+    def get_input(self) -> bool:
+        """Get the move of the player and call the AI next to make another move.
 
-    def make_move_user(self, row: int, column: int) -> bool:
+        Returns:
+            bool: True if the player make a move. False if there is something wrong with the input
+        """
+        while True:
+            try:
+                correct_col = False
+                correct_row = False
+
+                player_input = input(
+                    "\nType the number of the row and column (1 to 3) separated by a space\nor 'exit' to quit: ")
+
+                if player_input.lower() == "exit":
+                    return False
+                else: 
+                    row, column = map(int, player_input.split())
+
+                    if 1 <= row <= 3:
+                        correct_row = True
+                    if 1 <= column <= 3:
+                        correct_col = True
+
+                    if not correct_row and not correct_col:
+                        print("ERROR: Type the number of the row and column in the specified range")
+                    elif not correct_row:
+                        print("ERROR: Type the number of the row in the specified range")
+                    elif not correct_col:
+                        print("ERROR: Type the number of the column in the specified range")
+                    else:                
+                        moved = self.make_move_player(row, column)
+                        if not moved:
+                            print("\nERROR: The position it's already occupied select another")
+                            self.print_tic_tac_toe(True, None)
+                        else:
+                            return True
+            except ValueError:
+                print("ERROR: Type in the correct format")
+
+
+    def make_move_player(self, row: int, column: int) -> bool:
         """Make a move in the TicTacToe based on the row and the column in the list.
 
         Args:
@@ -94,44 +141,8 @@ class TicTacToe:
                 self.bit_list[column + row + 4] = 1
                 return True
         return False
-
     
-    def make_ai_move(self) -> bool:
-        """Make a move in the TicTacToe game. 
         
-        Based on the evaluation of all the possible moves of the current position.
-
-        Returns:
-            bool: True if the move was made, False otherwise.
-        """
-        p_moves_index = self.get_possible_moves()
-        
-        # Create the first possible moves of the current position
-        # position = Position(self.bit_list)
-        # position.create_children(list(p_moves_index))
-        # print(position.get_children_length())
-        # position.print_children()
-        # self.print_pos_children(position)
-        
-        best_move_index = random.choice(p_moves_index)
-        self.bit_list[best_move_index] = 0
-        
-        print("\nComputer move:")
-    
-    
-    def get_possible_moves(self) -> list:
-        """Get the list of the possible moves.
-
-        Returns:
-            list: List that have all the possible moves.
-        """
-        possible_moves = []
-        for i in range(0, self.list_length):
-            if self.bit_list[i] == None:
-                possible_moves.append(i)
-        return possible_moves
-    
-    
     def reset_game(self) -> None:
         """Reset the values of the list and set the game 
         unfinished to start another."""
@@ -143,11 +154,11 @@ class TicTacToe:
     def check_game_status(self) -> Union[str, int, None]:
         """Check the status of the game.
 
-        This function checks if the user (X) wins, the computer (O) wins, 
+        This function checks if the player (X) wins, the computer (O) wins, 
         if it's a tie, or if the game is unfinished.
 
         Returns:
-            int: Returns 1 if the user wins (X).
+            int: Returns 1 if the player wins (X).
             int: Returns 0 if the computer wins (O).
             str: Returns 'tie' if it's a tie.
             None: Returns None if the game is unfinished.
@@ -185,7 +196,7 @@ class TicTacToe:
         """Check the rows for a win.
 
         Returns:
-            int: Returns 1 if the user wins (X).
+            int: Returns 1 if the player wins (X).
             int: Returns 0 if the computer wins (O).
             None: Returns None if no win is found.
         """
@@ -218,7 +229,7 @@ class TicTacToe:
         """Check the columns for a win.
 
         Returns:
-            int: Returns 1 if the user wins (X).
+            int: Returns 1 if the player wins (X).
             int: Returns 0 if the computer wins (O).
             None: Returns None if no win is found.
         """
@@ -274,30 +285,3 @@ class TicTacToe:
                 print("\nGame finished O wins!")
             else:
                 print("\nGame finished in tie!")
-    
-    
-    def print_pos_children(self, position: Position) -> None:
-        """Print all the possible moves of the current position like a TicTacToe.
-        
-        Args:
-            position (Position): The current position object.
-        """
-        print("Current position possible moves:")
-        for child in position.children:
-            self.print_tic_tac_toe(False, child)
-
-
-    def evaluation(self, position: Position) -> int:
-        """Generate a value evaluating the position.
-
-        Args:
-            position (Position): The evaluated position.
-
-        Returns:
-            int: The value generated for the position.
-        """
-        # Block the three in a row
-        for i in range(position.pos_length):
-            pass
-        
-        
