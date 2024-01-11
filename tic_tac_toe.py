@@ -11,7 +11,7 @@ class TicTacToe:
     
     
     def __str__(self) -> str:
-        """Print the current state of the bit list
+        """ Print the current state of the bit list
 
         Returns:
             str: The list of the bits
@@ -20,11 +20,11 @@ class TicTacToe:
     
     
     def print_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
-        """Print the tic-tac-toe board to the console.
-        
-        None values are printed as spaces, 1 as X and 0 as O
+        """ Print the tic-tac-toe board to the console.
+            None values are printed as spaces, 1 as X and 0 as O
         """
         if main_game:
+            print()
             for i in range(0, self.list_length):
                 if i % 3 == 2:
                     if self.bit_list[i] == 1:
@@ -44,6 +44,7 @@ class TicTacToe:
                     else:
                         print(' ', end=' | ')
         else:
+            print()
             for i in range(0, position.pos_length):
                 if i % 3 == 2:
                     if position.pos_list[i] == 1:
@@ -62,9 +63,10 @@ class TicTacToe:
                         print('O', end=' | ')
                     else:
                         print(' ', end=' | ')
-    
+
+
     def make_move_user(self, row: int, column: int) -> bool:
-        """Make a move in the TicTacToe based on the row and the column in the list
+        """ Make a move in the TicTacToe based on the row and the column in the list
 
         Args:
             row (int): Number of the row
@@ -100,15 +102,16 @@ class TicTacToe:
         position.create_children(list(p_moves_index))
         print(position.get_children_length())
         position.print_children()
+        self.print_pos_children(position)
         
         best_move_index = random.choice(p_moves_index)
         self.bit_list[best_move_index] = 0
         
-        print("\nComputer move: \n")
+        print("\nComputer move:")
     
     
     def get_possible_moves(self) -> list:
-        """Get the list of the possible moves
+        """ Get the list of the possible moves
 
         Returns:
             list: List that have all the possible moves
@@ -121,7 +124,7 @@ class TicTacToe:
     
     
     def reset_game(self) -> None:
-        """Reset the values of the list and set the game unfinished to start another
+        """ Reset the values of the list and set the game unfinished to start another
         """
         for i in range(self.list_length):
             self.bit_list[i] = None
@@ -129,7 +132,7 @@ class TicTacToe:
             
     
     def check_game_status(self) -> Union[str, int, None]:
-        """Check the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
+        """ Check the status of the game (user (X) wins, computer (O) wins, Tie or unfinished)
 
         Returns:
             Union[str, int, None]: 1 if the user wins (X), 0 if the computer wins (O), 
@@ -189,7 +192,7 @@ class TicTacToe:
     
     
     def check_game_finished(self) -> None:
-        """Check if the game is finished or not
+        """ Check if the game is finished or not
         """
         result = self.check_game_status()
         if result is not None:
@@ -202,8 +205,19 @@ class TicTacToe:
                 print("\nGame finished in tie!")
     
     
+    def print_pos_children(self, position: Position) -> None:
+        """ Print all the possible moves of the currento position 
+            like a TicTacToe 
+        Args:
+            position (Position): The current position object
+        """
+        print("Current position possible moves:")
+        for child in position.children:
+            self.print_tic_tac_toe(False, child)
+    
+    
     def evaluation(self) -> int:
-        """Do the evaluation of the position
+        """ Do the evaluation of the position
 
         Returns:
             int: Result value of the evaluation

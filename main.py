@@ -2,10 +2,10 @@ from tic_tac_toe import TicTacToe
 
 
 def main() -> None:
-    """Start the TicTacToe game.
+    """ Start the TicTacToe game.
 
-    This function creates a new game, displays the initial state of the game,
-    and then prompts the user to make a move.
+        This function creates a new game, displays the initial state of the game,
+        and then prompts the user to make a move.
     """
     print("""
     -----------------------------------------------------------------
@@ -21,7 +21,7 @@ def main() -> None:
     
 
 def game_control(game: TicTacToe) -> None:
-    """Control the order of who plays first the user or the computer and displays
+    """ Control the order of who plays first the user or the computer and displays
     the TicTacToe board
 
     Args:
@@ -60,7 +60,7 @@ def game_control(game: TicTacToe) -> None:
 
  
 def make_move(game: TicTacToe) -> bool:
-    """Get the move of the user and call the AI next to make another move
+    """ Get the move of the user and call the AI next to make another move
     
     Args:
         game (TicTacToe): The TicTacToe object
@@ -75,7 +75,6 @@ def make_move(game: TicTacToe) -> bool:
 
             user_input = input(
                 "\nType the number of the row and column (1 to 3) separated by a space\nor 'exit' to quit: ")
-            print()
             
             if user_input.lower() == "exit":
                 return False
@@ -96,8 +95,8 @@ def make_move(game: TicTacToe) -> bool:
                 else:                
                     moved = game.make_move_user(row, column)
                     if not moved:
-                        print("\nERROR: The position it's already occupied select another\n")
-                        game.print_tic_tac_toe()
+                        print("\nERROR: The position it's already occupied select another")
+                        game.print_tic_tac_toe(True, None)
                     else:
                         return True
         except ValueError:
