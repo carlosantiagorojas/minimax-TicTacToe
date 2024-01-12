@@ -1,5 +1,4 @@
 from tic_tac_toe import TicTacToe
-from ai import AI
 
 
 def main() -> None:
@@ -17,43 +16,8 @@ def main() -> None:
     -----------------------------------------------------------------
     """)
     game = TicTacToe()
-    game.print_tic_tac_toe(True, None)
-    game_control(game)
-
-
-def game_control(game: TicTacToe) -> None:
-    """Control the order of who plays first and displays the TicTacToe board.
-
-    Args:
-        game (TicTacToe): The TicTacToe object.
-    """
-    counter = 1
-    ai = AI(game)
-    while True:
-        if game.finished:
-            # Reset the game and increment the counter to change who play first
-            game.reset_game()
-            counter += 1
-            game.print_tic_tac_toe(True, None)
-
-        # If the user moves
-        if counter % 2 == 1:
-            if not game.get_input():
-                break
-            game.print_tic_tac_toe(True, None)
-
-            if not game.finished:
-                ai.make_ai_move()
-                game.print_tic_tac_toe(True, None)
-        else:
-            ai.make_ai_move()
-            game.print_tic_tac_toe(True, None)
-
-            if not game.finished:
-                if not game.get_input():
-                    break
-                game.print_tic_tac_toe(True, None)
-
+    game.position.print_tic_tac_toe()
+    game.game_control()
 
 if __name__ == "__main__":
     main()
