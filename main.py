@@ -41,22 +41,18 @@ def game_control(game: TicTacToe) -> None:
             if not game.get_input():
                 break
             game.print_tic_tac_toe(True, None)
-            game.check_game_finished()
 
             if not game.finished:
                 ai.make_ai_move()
                 game.print_tic_tac_toe(True, None)
-                game.check_game_finished()
         else:
             ai.make_ai_move()
             game.print_tic_tac_toe(True, None)
-            game.check_game_finished()
 
             if not game.finished:
                 if not game.get_input():
                     break
                 game.print_tic_tac_toe(True, None)
-                game.check_game_finished()
 
 
 if __name__ == "__main__":

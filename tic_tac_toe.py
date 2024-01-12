@@ -31,6 +31,11 @@ class TicTacToe:
 
     @finished.setter
     def finished(self, value: bool) -> None:
+        """Set the finished status of the game.
+
+        Args:
+            value (bool): The finished status to set.
+        """ 
         self._finished = value
 
     def reset_game(self) -> None:
