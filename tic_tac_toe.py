@@ -1,23 +1,82 @@
+"""
+Control the TicTacToe game.
+It manages the game state, the game board is represented as a list of bits 
+where 1 represents an X (player), 0 represents an O (computer).
+"""
 from typing import Union, Optional
 from position import Position
 
 
 class TicTacToe:
+
     def __init__(self) -> None:
-        """Initialize a new TicTacToe game.
-        
-        An empty list filled with None represents the TicTacToe.
-        """
+        """Initialize a new TicTacToe game."""
         self.bit_list = [None for _ in range(9)]
         self.list_length = len(self.bit_list)
         self.finished = False
-    
-    
+ 
+    @property
+    def finished(self) -> bool:
+        """Check if the game is finished or not."""
+        result = self.check_game_status()
+        if result is not None:
+            if result == 1:
+                print("\nGame finished X wins!")
+            elif result == 0:
+                print("\nGame finished O wins!")
+            else:
+                print("\nGame finished in tie!")
+            self._finished = True
+        return self._finished
+
+    @finished.setter
+    def finished(self, value: bool) -> None:
+        self._finished = value
+
+    def reset_game(self) -> None:
+        """Reset the values of the list and set the game 
+        unfinished to start another."""
+        for i in range(self.list_length):
+            self.bit_list[i] = None
+        self.finished = False
+
+    def make_move_player(self, row: int, column: int) -> bool:
+        """Make a move in the TicTacToe based on the row and the column in the list.
+
+        Args:
+            row (int): Number of the row.
+            column (int): Number of the column.
+
+        Returns:
+            bool: True if the move was made, False otherwise.
+        """
+        # Subtract one to match the index of the list
+        row -= 1
+        column -= 1
+
+        # Make a move in the index of the list
+        if row == 0:
+            if self.bit_list[column] == None:
+                self.bit_list[column] = 1
+                return True
+        elif row == 1:
+            if self.bit_list[column + row + 2] == None:
+                self.bit_list[column + row + 2] = 1
+                return True
+        elif row == 2:
+            if self.bit_list[column + row + 4] == None:
+                self.bit_list[column + row + 4] = 1
+                return True
+        return False
+
     def get_input(self) -> bool:
         """Get the move of the player and call the AI next to make another move.
 
         Returns:
             bool: True if the player make a move. False if there is something wrong with the input
+        
+        Raises:
+            ValueError: if the row or column are not the correct type.
         """
         while True:
             try:
@@ -53,58 +112,6 @@ class TicTacToe:
             except ValueError:
                 print("ERROR: Type in the correct format")
 
-
-    def make_move_player(self, row: int, column: int) -> bool:
-        """Make a move in the TicTacToe based on the row and the column in the list.
-
-        Args:
-            row (int): Number of the row.
-            column (int): Number of the column.
-
-        Returns:
-            bool: True if the move was made, False otherwise.
-        """
-        # Subtract one to match the index of the list
-        row -= 1
-        column -= 1
-
-        # Make a move in the index of the list
-        if row == 0:
-            if self.bit_list[column] == None:
-                self.bit_list[column] = 1
-                return True
-        elif row == 1:
-            if self.bit_list[column + row + 2] == None:
-                self.bit_list[column + row + 2] = 1
-                return True
-        elif row == 2:
-            if self.bit_list[column + row + 4] == None:
-                self.bit_list[column + row + 4] = 1
-                return True
-        return False
-
-
-    def check_game_finished(self) -> None:
-        """Check if the game is finished or not."""
-        result = self.check_game_status()
-        if result is not None:
-            self.finished = True
-            if result == 1:
-                print("\nGame finished X wins!")
-            elif result == 0:
-                print("\nGame finished O wins!")
-            else:
-                print("\nGame finished in tie!")
-
-
-    def reset_game(self) -> None:
-        """Reset the values of the list and set the game 
-        unfinished to start another."""
-        for i in range(self.list_length):
-            self.bit_list[i] = None
-        self.finished = False
-                
-    
     def check_game_status(self) -> Union[str, int, None]:
         """Check the status of the game.
 
@@ -145,7 +152,6 @@ class TicTacToe:
         # If the game it's not finished return None
         return None
 
-
     def check_rows(self) -> Union[int, None]:
         """Check the rows for a win.
 
@@ -178,7 +184,6 @@ class TicTacToe:
                 
         return None
     
-
     def check_columns(self) -> Union[int, None]:
         """Check the columns for a win.
 
@@ -193,7 +198,6 @@ class TicTacToe:
                 if self.bit_list[i] == self.bit_list[i + 3] == self.bit_list[i + 6]:
                     return self.bit_list[i]
         return None
-
 
     def check_diagonal(self, index_start: int, step: int) -> Union[int, None]:
         """Check if all elements in a diagonal are the same and not None.
@@ -214,7 +218,6 @@ class TicTacToe:
             return self.bit_list[index_start]
         return None
     
-    
     def check_tie(self) -> Union[str, None]:
         """Check for a tie
 
@@ -226,7 +229,6 @@ class TicTacToe:
         if all(character is not None for character in self.bit_list):
             return "tie"
         return None
-
 
     def print_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
         """Print the tic-tac-toe board to the console. 
@@ -277,8 +279,7 @@ class TicTacToe:
                         print('O', end=' | ')
                     else:
                         print(' ', end=' | ')
-
-   
+ 
     def __str__(self) -> str:
         """Print the current state of the bit list.
 

@@ -1,7 +1,9 @@
+"""Represent the state of a position in a TicTacToeGame"""
 from typing import List
 
 
 class Position:
+
     def __init__(self, bit_list: list) -> None:
         """Intialize a new position
 
@@ -16,7 +18,15 @@ class Position:
         self.eval_value = 0
         self.children: List["Position"] = []
 
-        
+    @property
+    def children_length(self) -> int:
+        """Get the number of children.
+
+        Returns:
+            int: Number of children.
+        """
+        return len(self.children)
+
     def create_children(self, p_moves_index: list) -> None:
         """ Create the children of the position 
 
@@ -37,12 +47,10 @@ class Position:
             # Remove the move that has been performed
             p_moves_index.pop(0)
 
-
     def print_children(self) -> None:
         """Show each child list of the position."""
         for child in self.children:
             print(child)
-    
     
     def get_children(self) -> List["Position"]:
         """Get the children list.
@@ -52,16 +60,6 @@ class Position:
         """
         return self.children
 
-
-    def get_children_length(self) -> int:
-        """Get the number of children.
-
-        Returns:
-            int: Number of children.
-        """
-        return len(self.children)
-    
-    
     def __str__(self) -> str:
         """Print the current state of the position.
 
