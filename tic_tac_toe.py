@@ -1,6 +1,7 @@
 from typing import Union, Optional
 from position import Position
 
+
 class TicTacToe:
     def __init__(self) -> None:
         """Initialize a new TicTacToe game.
@@ -12,66 +13,6 @@ class TicTacToe:
         self.finished = False
     
     
-    def __str__(self) -> str:
-        """Print the current state of the bit list.
-
-        Returns:
-            str: The list of the bits.
-        """
-        return f"{self.bit_list}"
-    
-    
-    def print_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
-        """Print the tic-tac-toe board to the console. 
-        
-        None values are printed as spaces, 1 as X and 0 as O.
-        
-        Args:
-            main_game (bool): True if want to print the TicTacToe main game
-            position Optional[Position]: Pass antoher position to print
-        """
-        if main_game:
-            print()
-            for i in range(0, self.list_length):
-                if i % 3 == 2:
-                    if self.bit_list[i] == 1:
-                        print('X')
-                    elif self.bit_list[i] == 0:
-                        print('O')
-                    else:
-                        print(' ')
-
-                    if i != len(self.bit_list) - 1:
-                        print('---------')
-                else:
-                    if self.bit_list[i] == 1:
-                        print('X', end=' | ')
-                    elif self.bit_list[i] == 0:
-                        print('O', end=' | ')
-                    else:
-                        print(' ', end=' | ')
-        else:
-            print()
-            for i in range(0, position.pos_length):
-                if i % 3 == 2:
-                    if position.pos_list[i] == 1:
-                        print('X')
-                    elif position.pos_list[i] == 0:
-                        print('O')
-                    else:
-                        print(' ')
-
-                    if i != position.pos_length - 1:
-                        print('---------')
-                else:
-                    if position.pos_list[i] == 1:
-                        print('X', end=' | ')
-                    elif position.pos_list[i] == 0:
-                        print('O', end=' | ')
-                    else:
-                        print(' ', end=' | ')
-
-            
     def get_input(self) -> bool:
         """Get the move of the player and call the AI next to make another move.
 
@@ -124,9 +65,9 @@ class TicTacToe:
             bool: True if the move was made, False otherwise.
         """
         # Subtract one to match the index of the list
-        row -= 1 
+        row -= 1
         column -= 1
-        
+
         # Make a move in the index of the list
         if row == 0:
             if self.bit_list[column] == None:
@@ -141,15 +82,28 @@ class TicTacToe:
                 self.bit_list[column + row + 4] = 1
                 return True
         return False
-    
-        
+
+
+    def check_game_finished(self) -> None:
+        """Check if the game is finished or not."""
+        result = self.check_game_status()
+        if result is not None:
+            self.finished = True
+            if result == 1:
+                print("\nGame finished X wins!")
+            elif result == 0:
+                print("\nGame finished O wins!")
+            else:
+                print("\nGame finished in tie!")
+
+
     def reset_game(self) -> None:
         """Reset the values of the list and set the game 
         unfinished to start another."""
         for i in range(self.list_length):
             self.bit_list[i] = None
         self.finished = False
-            
+                
     
     def check_game_status(self) -> Union[str, int, None]:
         """Check the status of the game.
@@ -272,16 +226,63 @@ class TicTacToe:
         if all(character is not None for character in self.bit_list):
             return "tie"
         return None
-    
-    
-    def check_game_finished(self) -> None:
-        """Check if the game is finished or not."""
-        result = self.check_game_status()
-        if result is not None:
-            self.finished = True
-            if result == 1:
-                print("\nGame finished X wins!")
-            elif result == 0:
-                print("\nGame finished O wins!")
-            else:
-                print("\nGame finished in tie!")
+
+
+    def print_tic_tac_toe(self, main_game: bool, position: Optional[Position]) -> None:
+        """Print the tic-tac-toe board to the console. 
+        
+        None values are printed as spaces, 1 as X and 0 as O.
+        
+        Args:
+            main_game (bool): True if want to print the TicTacToe main game
+            position Optional[Position]: Pass antoher position to print
+        """
+        if main_game:
+            print()
+            for i in range(0, self.list_length):
+                if i % 3 == 2:
+                    if self.bit_list[i] == 1:
+                        print('X')
+                    elif self.bit_list[i] == 0:
+                        print('O')
+                    else:
+                        print(' ')
+
+                    if i != len(self.bit_list) - 1:
+                        print('---------')
+                else:
+                    if self.bit_list[i] == 1:
+                        print('X', end=' | ')
+                    elif self.bit_list[i] == 0:
+                        print('O', end=' | ')
+                    else:
+                        print(' ', end=' | ')
+        else:
+            print()
+            for i in range(0, position.pos_length):
+                if i % 3 == 2:
+                    if position.pos_list[i] == 1:
+                        print('X')
+                    elif position.pos_list[i] == 0:
+                        print('O')
+                    else:
+                        print(' ')
+
+                    if i != position.pos_length - 1:
+                        print('---------')
+                else:
+                    if position.pos_list[i] == 1:
+                        print('X', end=' | ')
+                    elif position.pos_list[i] == 0:
+                        print('O', end=' | ')
+                    else:
+                        print(' ', end=' | ')
+
+   
+    def __str__(self) -> str:
+        """Print the current state of the bit list.
+
+        Returns:
+            str: The list of the bits.
+        """
+        return f"{self.bit_list}"

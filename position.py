@@ -25,6 +25,7 @@ class Position:
         """
         return f"{self.pos_list}"
     
+    
     def create_children(self, p_moves_index: list) -> None:
         """ Create the children of the position 
 
@@ -44,6 +45,7 @@ class Position:
             
             # Remove the move that has been performed
             p_moves_index.pop(0)
+
 
     def get_children(self) -> List["Position"]:
         """Get the children list.

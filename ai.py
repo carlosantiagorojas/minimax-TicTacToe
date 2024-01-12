@@ -2,6 +2,7 @@ import random
 from tic_tac_toe import TicTacToe
 from position import Position
 
+
 class AI:
     def __init__(self, game: TicTacToe) -> None:
         """Initialize the AI with the current game state.
@@ -12,19 +13,6 @@ class AI:
         self.game = game
     
     
-    def print_pos_children(self, position: Position) -> None:
-        """Print all the possible moves of the current position like a TicTacToe.
-        
-        Args:
-            position (Position): The current position object.
-        """
-        print("Current position possible moves:")
-        for child in position.children:
-            self.game.print_tic_tac_toe(False, child)
-            child.eval_value = self.evaluation(child)
-            print("Evaluation value: ", child.eval_value)
-      
-        
     def make_ai_move(self) -> bool:
         """Make a move in the TicTacToe game. 
         
@@ -38,16 +26,15 @@ class AI:
         # Create the first possible moves of the current position
         position = Position(self.game.bit_list)
         position.create_children(list(p_moves_index))
-        # print(position.get_children_length())
-        # position.print_children()
         self.print_pos_children(position)
         
+        # Choose the best move
         best_move_index = random.choice(p_moves_index)
         self.game.bit_list[best_move_index] = 0
         
         print("\nComputer move:")
-        
-        
+
+
     def get_possible_moves(self) -> list:
         """Get the list of the possible moves.
 
@@ -59,6 +46,19 @@ class AI:
             if self.game.bit_list[i] == None:
                 possible_moves.append(i)
         return possible_moves
+    
+    
+    def print_pos_children(self, position: Position) -> None:
+        """Print all the possible moves of the current position like a TicTacToe.
+        
+        Args:
+            position (Position): The current position object.
+        """
+        print("Current position possible moves:")
+        for child in position.children:
+            self.game.print_tic_tac_toe(False, child)
+            child.eval_value = self.evaluation(child)
+            print("Evaluation value: ", child.eval_value)
     
     
     def evaluation(self, position: Position) -> int:
