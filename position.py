@@ -18,7 +18,6 @@ class Position:
         self.evaluation = 0
         self.children: List["Position"] = []
         self.game_over = False
-        self.last_move_index = None
 
     @property
     def game_over(self) -> bool:
@@ -48,6 +47,7 @@ class Position:
         """Generate a value evaluating a position with a heuristic.
         
         The evaluation consider this cases:
+        - Make a three in a row +100
         - Block a three in a row +10
     
         Returns:
@@ -55,13 +55,37 @@ class Position:
         """
         eval_score = 0
         
-        # Block the three in a row +10
+        # Row
         for i in range(0, self.pos_length, 3):
             row = self.pos_list[i:i+3]
-            # check if there are two 'X' and '0' blocking it
+            # Check if there are two 'X' and '0' blocking it
             if row.count(0) == 1 and row.count(1) == 2:
                 eval_score += 10
+            # Check if possible to do three in a row
+            elif row.count(0) == 3:
+                eval_score += 100
 
+        # Column
+        for i in range(3):
+            column = [self.pos_list[i], self.pos_list[i + 3], self.pos_list[i + 6]]
+            # Check if there are two 'X' and '0' blocking it
+            if column.count(0) == 1 and column.count(1) == 2:
+                eval_score += 10
+            # Check if possible to do three in a row
+            elif column.count(0) == 3:
+                eval_score += 100
+                
+        # Diagonal 
+        diagonals = [[self.pos_list[0], self.pos_list[4], self.pos_list[8]], [
+            self.pos_list[2], self.pos_list[4], self.pos_list[6]]]
+        for diagonal in diagonals:
+            # Check if there are two 'X' and '0' blocking it
+            if diagonal.count(0) == 1 and diagonal.count(1) == 2:
+                eval_score += 10
+            # Check if possible to do three in a row
+            elif diagonal.count(0) == 3:
+                eval_score += 100
+        
         return eval_score
     
     @evaluation.setter
@@ -107,12 +131,10 @@ class Position:
                 # Perform the first available move with 0 (computer turn)
                 pos_copy[p_moves_index[0]] = 0
                 child = Position(pos_copy)
-                child.last_move_index = [p_moves_index[0]]
             else:
                 # Perfrom the first available move with 1 (player turn)
                 pos_copy[p_moves_index[0]] = 1
                 child = Position(pos_copy)
-                child.last_move_index = [p_moves_index[0]]
                 
             # Add the new child to the list of children
             self.children.append(child)
@@ -139,22 +161,7 @@ class Position:
             if self.pos_list[i] == None:
                 possible_moves.append(i)
         return possible_moves
-    
-    def search_best_move(self, best_move_value: float) -> "Position":
-        """Search the best move in the children list.
-
-        Args:
-            best_move_value (float): The value of the best move.
-
-        Returns:
-            Position: The position of the best move.
-        """
-        for child in self.children:
-            if child.evaluation == best_move_value:
-                print("Best move found: ")
-                child.print_tic_tac_toe()
-                return child
-    
+       
     def copy(self):
         """Create a copy of the current position."""
         return Position(self.pos_list.copy())
