@@ -31,9 +31,11 @@ class TicTacToe:
 
                 if not self.position.game_over:
                     ai.make_ai_move()
+                    self.position = ai.position
                     self.position.print_tic_tac_toe()
             else:
                 ai.make_ai_move()
+                self.position = ai.position
                 self.position.print_tic_tac_toe()
 
                 if not self.position.game_over:

@@ -54,32 +54,23 @@ class Position:
             int: The value generated for a position.
         """
         eval_score = 0
+        
         # Block the three in a row +10
-
-        # Rows
-        two_char = 0
-        temp = None
-        for i in range(self.pos_length):
-            # If the current character is the same as the previous and is not none
-            if self.pos_list[i] == temp and self.pos_list[i] is not None:
-               two_char += 1
-
-            if (two_char == 1 and self.pos_list[i] is not None
-                    and self.pos_list[i] != temp):
+        for i in range(0, self.pos_length, 3):
+            row = self.pos_list[i:i+3]
+            # check if there are two 'X' and '0' blocking it
+            if row.count(0) == 1 and row.count(1) == 2:
                 eval_score += 10
-
-            # Save the previous character
-            temp = self.pos_list[i]
-
-            # Reset in the last character of the row
-            if i == 2 or i == 5:
-                two_char = 0
-                temp = None
 
         return eval_score
     
     @evaluation.setter
     def evaluation(self, value: int) -> None:
+        """Set the evaluation value of the position.
+
+        Args:
+            value (int): The evaluation value to set.
+        """
         self._evaluation = value
     
     @property
@@ -98,21 +89,31 @@ class Position:
             self.pos_list[i] = None
         self.game_over = False
 
-    def create_children(self, p_moves_index: list) -> None:
-        """ Create the children of the position 
-
+    def create_children(self, p_moves_index: list, ai_turn: bool) -> None:
+        """Create the children of the position.
+        
+        Make all the available moves and create a child for each move,
+        with the player that moves next turn.
+        
         Args:
-            p_moves_index (list): All the possible moves
+            p_moves_index (list): All the possible moves.
+            ai_turn (bool): True if it's the AI turn, False otherwise.
         """
         # For each possible move, create a child
         while len(p_moves_index) > 0:
             pos_copy = self.pos_list.copy( )
             
-            # Perform the first available move
-            pos_copy[p_moves_index[0]] = 0
-            child = Position(pos_copy)
-            child.last_move_index = [p_moves_index[0]]
-            
+            if ai_turn:
+                # Perform the first available move with 0 (computer turn)
+                pos_copy[p_moves_index[0]] = 0
+                child = Position(pos_copy)
+                child.last_move_index = [p_moves_index[0]]
+            else:
+                # Perfrom the first available move with 1 (player turn)
+                pos_copy[p_moves_index[0]] = 1
+                child = Position(pos_copy)
+                child.last_move_index = [p_moves_index[0]]
+                
             # Add the new child to the list of children
             self.children.append(child)
             
@@ -139,7 +140,15 @@ class Position:
                 possible_moves.append(i)
         return possible_moves
     
-    def search_best_move(self, best_move_value) -> "Position":    
+    def search_best_move(self, best_move_value: float) -> "Position":
+        """Search the best move in the children list.
+
+        Args:
+            best_move_value (float): The value of the best move.
+
+        Returns:
+            Position: The position of the best move.
+        """
         for child in self.children:
             if child.evaluation == best_move_value:
                 print("Best move found: ")
