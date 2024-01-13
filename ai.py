@@ -20,8 +20,8 @@ class AI:
 
         # Choose the best move
         best_move_value, best_move = self.minimax(self.position, 2, True)
-        print("\nMinimax result: ", best_move_value)    
-        self.position.print_pos_children()
+        # print("\nMinimax result: ", best_move_value)    
+        # self.position.print_pos_children()
         
         if best_move is None:
             print("ERROR: No valid move found")
@@ -44,43 +44,43 @@ class AI:
         Returns:
             Tuple[float, Position]: The evaluation of the position and the position itself.
         """
-        print("Depth: ", depth)
+        # print("Depth: ", depth)
         if depth == 0 or position.game_over:
             return position.evaluation, position
         
         if maximizingPlayer:
-            print("""
-                -----------------
-                  maximizingPlayer
-                -----------------
-                  """)
+            # print("""
+            #     -----------------
+            #       maximizingPlayer
+            #     -----------------
+            #       """)
             maxEvaluation = float('-inf')
             maxChild = None
             for child in position.children:
-                child.print_tic_tac_toe()
+                # child.print_tic_tac_toe()
                 child.create_children(child.get_possible_moves().copy(), False)
                 eval, _ = self.minimax(child, depth - 1, False)
-                print("Self evaluation: ", eval)
+                # print("Self evaluation: ", eval)
                 if eval > maxEvaluation:
                     maxEvaluation = eval
                     maxChild = child
-                    print("Max evaluation: ", maxEvaluation)
+                    # print("Max evaluation: ", maxEvaluation)
             return maxEvaluation, maxChild
         else:
-            print("""
-                -----------------
-                  minimizinglayer
-                -----------------
-                  """)
+            # print("""
+            #     -----------------
+            #       minimizinglayer
+            #     -----------------
+            #       """)
             minEvaluation = float('inf')
             minChild = None
             for child in position.children:
-                child.print_tic_tac_toe()                
+                # child.print_tic_tac_toe()                
                 child.create_children(child.get_possible_moves().copy(), True)
                 eval, _ = self.minimax(child, depth - 1, True)
-                print("self evaluation: ", child.evaluation)
+                # print("self evaluation: ", child.evaluation)
                 if eval < minEvaluation:
                     minEvaluation = eval
                     minChild = child
-                    print("Min evaluation: ", minEvaluation)
+                    # print("Min evaluation: ", minEvaluation)
             return minEvaluation, minChild

@@ -18,6 +18,7 @@ class TicTacToe:
         ai = AI(self.position)
         while True:
             if self.position.game_over:
+                self.position.print_game_over()
                 # Reset the game and increment the counter to change who play first
                 self.position.reset_position()
                 counter += 1
@@ -109,7 +110,7 @@ class TicTacToe:
                         moved = self.make_move_player(row, column)
                         if not moved:
                             print("\nERROR: The position it's already occupied select another")
-                            self.print_tic_tac_toe(True, None)
+                            self.position.print_tic_tac_toe()
                         else:
                             return True
             except ValueError:

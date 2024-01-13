@@ -18,19 +18,15 @@ class Position:
         self.evaluation = 0
         self.children: List["Position"] = []
         self.game_over = False
+        self.winner_player = None
 
     @property
     def game_over(self) -> bool:
         """Check if the game is finished or not."""
         result = self.check_game_status()
         if result is not None:
-            if result == 1:
-                print("\nGame finished X wins!")
-            elif result == 0:
-                print("\nGame finished O wins!")
-            else:
-                print("\nGame finished in tie!")
             self._game_over = True
+            self.winner_player = result
         return self._game_over
 
     @game_over.setter
@@ -58,33 +54,87 @@ class Position:
         # Row
         for i in range(0, self.pos_length, 3):
             row = self.pos_list[i:i+3]
+            
+            # Check if possible to do three in a row
+            if row.count(0) == 3:
+                eval_score += 100
+            
+            # Check if there are three 'X' and lose the game
+            if row.count(1) == 3:
+                eval_score -= 100
+            
             # Check if there are two 'X' and '0' blocking it
             if row.count(0) == 1 and row.count(1) == 2:
                 eval_score += 10
-            # Check if possible to do three in a row
-            elif row.count(0) == 3:
-                eval_score += 100
+            
+            # If the row it's not full
+            if row.count(None) == 1:  
+                # If the next move is in the center
+                if row[1] == 0:
+                    eval_score += 1
+                # If the next move is in the corner
+                if row[0] == 0: 
+                    eval_score += 2
+                if row[2] == 0:
+                    eval_score += 2
 
         # Column
         for i in range(3):
             column = [self.pos_list[i], self.pos_list[i + 3], self.pos_list[i + 6]]
+            
+            # Check if possible to do three in a row
+            if column.count(0) == 3:
+                eval_score += 100
+            
+            # Check if there are three 'X' and lose the game
+            if column.count(1) == 3:
+                eval_score -= 100
+            
             # Check if there are two 'X' and '0' blocking it
             if column.count(0) == 1 and column.count(1) == 2:
                 eval_score += 10
-            # Check if possible to do three in a row
-            elif column.count(0) == 3:
-                eval_score += 100
+           
+            # If the column it's not full
+            if column.count(None) == 1:
+                # If the next move is in the corner
+                if column[0] == 0:
+                    eval_score += 2  
+                if column[2] == 0:
+                    eval_score += 2
+                    
+                # If the next move is in the center
+                elif column[1] == 0:
+                    eval_score += 1
                 
         # Diagonal 
-        diagonals = [[self.pos_list[0], self.pos_list[4], self.pos_list[8]], [
-            self.pos_list[2], self.pos_list[4], self.pos_list[6]]]
+        diagonals = [[self.pos_list[0], self.pos_list[4], self.pos_list[8]], 
+                    [self.pos_list[2], self.pos_list[4], self.pos_list[6]]]
+        
         for diagonal in diagonals:
+            # Check if possible to do three in a row
+            if diagonal.count(0) == 3:
+                eval_score += 100
+
+            # Check if there are three 'X' and lose the game
+            if diagonal.count(1) == 3:
+                eval_score -= 100
+    
             # Check if there are two 'X' and '0' blocking it
             if diagonal.count(0) == 1 and diagonal.count(1) == 2:
                 eval_score += 10
-            # Check if possible to do three in a row
-            elif diagonal.count(0) == 3:
-                eval_score += 100
+
+        # If are two 'X' and '0' in the center and '0' in another corner -= 5
+        if (diagonal[0] == 1 and diagonal[2] == 1 and diagonal[1] == 0) or \
+        (diagonal[0] == 0 and diagonal[2] == 0 and diagonal[1] == 1):
+            eval_score -= 5
+
+        
+        # The whole board
+        
+        # If the other player has the first move the second move is in the center
+        if self.pos_list.count(None) == 6 and self.pos_list[4] == 0:
+            eval_score += 5
+        
         
         return eval_score
     
@@ -316,11 +366,19 @@ class Position:
                 else:
                     print(' ', end=' | ')
 
+    def print_game_over(self) -> None:
+        if self.winner_player == 1:
+            print("\nGame finished X wins!")
+        elif self.winner_player == 0:
+            print("\nGame finished O wins!")
+        else:
+            print("\nGame finished in tie!")
+                
     def print_children(self) -> None:
         """Show each child list of the position."""
         for child in self.children:
             print(child)
-
+                
     def __str__(self) -> str:
         """Print the current state of the position.
 
