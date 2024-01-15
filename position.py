@@ -48,64 +48,6 @@ class Position:
             
         return eval_score
     
-    def check_two_in_a_row(self, player: int) -> bool:
-        """Check if the opponent has two in a row and can place a third to get three in a row.
-
-        Args:
-            player (int): The player to check for two in a row.
-
-        Returns:
-            bool: True if the opponent has two in a row and can place a third, False otherwise.
-        """
-        opponent = 0 if player == 1 else 1
-
-        # Check rows for two in a row
-        for i in range(0, self.pos_length, 3):
-            if self.pos_list[i:i+3].count(opponent) == 2 and self.pos_list[i:i+3].count(None) == 1:
-                return True
-
-        # Check columns for two in a row
-        for i in range(3):
-            if [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(opponent) == 2 and [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(None) == 1:
-                return True
-
-        # Check diagonals for two in a row
-        if [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(opponent) == 2 and [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(None) == 1:
-            return True
-        if [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(opponent) == 2 and [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(None) == 1:
-            return True
-
-        return False
-    
-    def check_fork(self, player: int) -> bool:
-        """Check for a fork opportunity for a given player.
-
-        Args:
-            player (int): The player to check for a fork opportunity.
-
-        Returns:
-            bool: True if a fork opportunity exists, False otherwise.
-        """
-        fork_count = 0
-
-        # Check rows for fork opportunities
-        for i in range(0, self.pos_length, 3):
-            if self.pos_list[i:i+3].count(player) == 2 and self.pos_list[i:i+3].count(None) == 1:
-                fork_count += 1
-
-        # Check columns for fork opportunities
-        for i in range(3):
-            if [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(player) == 2 and [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(None) == 1:
-                fork_count += 1
-
-        # Check diagonals for fork opportunities
-        if [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(player) == 2 and [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(None) == 1:
-            fork_count += 1
-        if [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(player) == 2 and [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(None) == 1:
-            fork_count += 1
-
-        return fork_count >= 2
-    
     @evaluation.setter
     def evaluation(self, value: int) -> None:
         """Set the evaluation value of the position.
