@@ -8,12 +8,12 @@ def main() -> None:
     and then prompts the user to make a move.
     """
     print("""
-    -----------------------------------------------------------------
+    --------------------------------------------------------------------------------
     TicTacToe
     
     You start playing first in the first game and the computer the next one an so on.
     You play with 'X' and the computer with 'O'
-    -----------------------------------------------------------------
+    --------------------------------------------------------------------------------
     """)
     game = Game()
     game.position.print_tic_tac_toe()
