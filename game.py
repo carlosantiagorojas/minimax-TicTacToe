@@ -7,7 +7,28 @@ from position import Position
 from ai import AI
 
 class Game:
-
+    """Control the TicTacToe game.
+    
+    It manages the game state, the game board is represented as a list of bits
+    where 1 represents an X (player), 0 represents an O (computer).
+    
+    Parameters
+    ----------
+    position : Position
+        The current position of the game.
+    
+    Methods
+    -------
+    game_control() -> None
+        Control the order of who plays first and displays the TicTacToe board.
+    make_move_player(column: int, row: int) -> bool
+        Make a move in the TicTacToe based on the row and the column in the list.
+    get_input() -> bool
+        Get the move of the player and call the AI next to make another move.
+    __str__() -> str
+        Print the current state of the bit list.    
+    """
+    
     def __init__(self) -> None:
         """Initialize a new TicTacToe game."""
         self.position = Position([None for _ in range(9)])
