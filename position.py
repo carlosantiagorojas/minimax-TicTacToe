@@ -26,8 +26,6 @@ class Position:
         Check if the specified player has won the game.
     create_children(p_moves_index: list, ai_turn: bool) -> None
         Create the children of the position.
-    get_children() -> List["Position"]
-        Get the children list.
     get_possible_moves() -> list
         Get the list of the possible moves.
     get_empty_positions() -> int
@@ -95,7 +93,6 @@ class Position:
         """
         self._game_over = value
         
-
     @property
     def evaluation(self) -> int:
         """Get the evaluation value of the position.
@@ -209,15 +206,7 @@ class Position:
             
             # Remove the move that has been performed
             p_moves_index.pop(0)
-       
-    def get_children(self) -> List["Position"]:
-        """Get the children list.
 
-        Returns:
-            List["Position"]: The list of the children.
-        """
-        return self.children
-    
     def get_possible_moves(self) -> list:
         """Get the list of the possible moves.
 
