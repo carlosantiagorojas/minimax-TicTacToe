@@ -6,7 +6,7 @@ where 1 represents an X (player), 0 represents an O (computer).
 from position import Position
 from ai import AI
 
-class TicTacToe:
+class Game:
 
     def __init__(self) -> None:
         """Initialize a new TicTacToe game."""
@@ -44,12 +44,12 @@ class TicTacToe:
                         break
                     self.position.print_tic_tac_toe()
 
-    def make_move_player(self, row: int, column: int) -> bool:
+    def make_move_player(self, column: int, row: int) -> bool:
         """Make a move in the TicTacToe based on the row and the column in the list.
 
         Args:
-            row (int): Number of the row.
             column (int): Number of the column.
+            row (int): Number of the row.
 
         Returns:
             bool: True if the move was made, False otherwise.
@@ -88,12 +88,12 @@ class TicTacToe:
                 correct_row = False
 
                 player_input = input(
-                    "\nType the number of the row and column (1 to 3) separated by a space\nor 'exit' to quit: ")
+                    "\nType the number of the column and row (1 to 3) separated by a space\nor 'exit' to quit: ")
 
                 if player_input.lower() == "exit":
                     return False
                 else: 
-                    row, column = map(int, player_input.split())
+                    column, row = map(int, player_input.split())
 
                     if 1 <= row <= 3:
                         correct_row = True
@@ -101,13 +101,15 @@ class TicTacToe:
                         correct_col = True
 
                     if not correct_row and not correct_col:
-                        print("ERROR: Type the number of the row and column in the specified range")
+                        print(
+                            "ERROR: Type the number of the column and row in the specified range")
                     elif not correct_row:
-                        print("ERROR: Type the number of the row in the specified range")
+                        print(
+                            "ERROR: Type the number of the row in the specified range")
                     elif not correct_col:
                         print("ERROR: Type the number of the column in the specified range")
                     else:                
-                        moved = self.make_move_player(row, column)
+                        moved = self.make_move_player(column, row)
                         if not moved:
                             print("\nERROR: The position it's already occupied select another")
                             self.position.print_tic_tac_toe()

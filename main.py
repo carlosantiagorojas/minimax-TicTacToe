@@ -1,4 +1,4 @@
-from tic_tac_toe import TicTacToe
+from game import Game
 
 
 def main() -> None:
@@ -15,7 +15,7 @@ def main() -> None:
     You play with 'X' and the computer with 'O'
     -----------------------------------------------------------------
     """)
-    game = TicTacToe()
+    game = Game()
     game.position.print_tic_tac_toe()
     game.game_control()
 

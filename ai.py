@@ -14,13 +14,10 @@ class AI:
 
     def make_ai_move(self) -> bool:
         """Make a move in the TicTacToe based on the minimax algorithm result."""
-        # Create the first children for the first move to be able to do the minimax
-        self.position.create_children(
-            self.position.get_possible_moves().copy(), True)
 
         # Choose the best move
-        best_move_value, best_move = self.minimax(self.position, 2, True)
-        # print("\nMinimax result: ", best_move_value)    
+        best_move_value, best_move = self.minimax(self.position, self.position.get_empty_positions(), True)
+        print("\nMinimax result: ", best_move_value)    
         # self.position.print_pos_children()
         
         if best_move is None:
@@ -54,11 +51,12 @@ class AI:
             #       maximizingPlayer
             #     -----------------
             #       """)
-            maxEvaluation = float('-inf')
+            maxEvaluation = float('-inf') 
             maxChild = None
-            for child in position.children:
+            for move in position.get_possible_moves():
                 # child.print_tic_tac_toe()
-                child.create_children(child.get_possible_moves().copy(), False)
+                child = position.copy()
+                child.pos_list[move] = 0
                 eval, _ = self.minimax(child, depth - 1, False)
                 # print("Self evaluation: ", eval)
                 if eval > maxEvaluation:
@@ -74,11 +72,12 @@ class AI:
             #       """)
             minEvaluation = float('inf')
             minChild = None
-            for child in position.children:
+            for move in position.get_possible_moves():
                 # child.print_tic_tac_toe()                
-                child.create_children(child.get_possible_moves().copy(), True)
+                child = position.copy()
+                child.pos_list[move] = 1  # Make the move for the player
                 eval, _ = self.minimax(child, depth - 1, True)
-                # print("self evaluation: ", child.evaluation)
+                # print("Self evaluation: ", child.evaluation)
                 if eval < minEvaluation:
                     minEvaluation = eval
                     minChild = child

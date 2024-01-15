@@ -40,103 +40,71 @@ class Position:
         
     @property
     def evaluation(self) -> int:
-        """Generate a value evaluating a position with a heuristic.
-        
-        The evaluation consider this cases:
-        - Make a three in a row +100
-        - Block a three in a row +10
-    
-        Returns:
-            int: The value generated for a position.
-        """
         eval_score = 0
-        
-        # Row
-        for i in range(0, self.pos_length, 3):
-            row = self.pos_list[i:i+3]
+        if self.check_win(0):
+            eval_score += 100
+        elif self.check_win(1):
+            eval_score -= 100
             
-            # Check if possible to do three in a row
-            if row.count(0) == 3:
-                eval_score += 100
-            
-            # Check if there are three 'X' and lose the game
-            if row.count(1) == 3:
-                eval_score -= 100
-            
-            # Check if there are two 'X' and '0' blocking it
-            if row.count(0) == 1 and row.count(1) == 2:
-                eval_score += 10
-            
-            # If the row it's not full
-            if row.count(None) == 1:  
-                # If the next move is in the center
-                if row[1] == 0:
-                    eval_score += 1
-                # If the next move is in the corner
-                if row[0] == 0: 
-                    eval_score += 2
-                if row[2] == 0:
-                    eval_score += 2
-
-        # Column
-        for i in range(3):
-            column = [self.pos_list[i], self.pos_list[i + 3], self.pos_list[i + 6]]
-            
-            # Check if possible to do three in a row
-            if column.count(0) == 3:
-                eval_score += 100
-            
-            # Check if there are three 'X' and lose the game
-            if column.count(1) == 3:
-                eval_score -= 100
-            
-            # Check if there are two 'X' and '0' blocking it
-            if column.count(0) == 1 and column.count(1) == 2:
-                eval_score += 10
-           
-            # If the column it's not full
-            if column.count(None) == 1:
-                # If the next move is in the corner
-                if column[0] == 0:
-                    eval_score += 2  
-                if column[2] == 0:
-                    eval_score += 2
-                    
-                # If the next move is in the center
-                elif column[1] == 0:
-                    eval_score += 1
-                
-        # Diagonal 
-        diagonals = [[self.pos_list[0], self.pos_list[4], self.pos_list[8]], 
-                    [self.pos_list[2], self.pos_list[4], self.pos_list[6]]]
-        
-        for diagonal in diagonals:
-            # Check if possible to do three in a row
-            if diagonal.count(0) == 3:
-                eval_score += 100
-
-            # Check if there are three 'X' and lose the game
-            if diagonal.count(1) == 3:
-                eval_score -= 100
-    
-            # Check if there are two 'X' and '0' blocking it
-            if diagonal.count(0) == 1 and diagonal.count(1) == 2:
-                eval_score += 10
-
-        # If are two 'X' and '0' in the center and '0' in another corner -= 5
-        if (diagonal[0] == 1 and diagonal[2] == 1 and diagonal[1] == 0) or \
-        (diagonal[0] == 0 and diagonal[2] == 0 and diagonal[1] == 1):
-            eval_score -= 5
-
-        
-        # The whole board
-        
-        # If the other player has the first move the second move is in the center
-        if self.pos_list.count(None) == 6 and self.pos_list[4] == 0:
-            eval_score += 5
-        
-        
         return eval_score
+    
+    def check_two_in_a_row(self, player: int) -> bool:
+        """Check if the opponent has two in a row and can place a third to get three in a row.
+
+        Args:
+            player (int): The player to check for two in a row.
+
+        Returns:
+            bool: True if the opponent has two in a row and can place a third, False otherwise.
+        """
+        opponent = 0 if player == 1 else 1
+
+        # Check rows for two in a row
+        for i in range(0, self.pos_length, 3):
+            if self.pos_list[i:i+3].count(opponent) == 2 and self.pos_list[i:i+3].count(None) == 1:
+                return True
+
+        # Check columns for two in a row
+        for i in range(3):
+            if [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(opponent) == 2 and [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(None) == 1:
+                return True
+
+        # Check diagonals for two in a row
+        if [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(opponent) == 2 and [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(None) == 1:
+            return True
+        if [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(opponent) == 2 and [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(None) == 1:
+            return True
+
+        return False
+    
+    def check_fork(self, player: int) -> bool:
+        """Check for a fork opportunity for a given player.
+
+        Args:
+            player (int): The player to check for a fork opportunity.
+
+        Returns:
+            bool: True if a fork opportunity exists, False otherwise.
+        """
+        fork_count = 0
+
+        # Check rows for fork opportunities
+        for i in range(0, self.pos_length, 3):
+            if self.pos_list[i:i+3].count(player) == 2 and self.pos_list[i:i+3].count(None) == 1:
+                fork_count += 1
+
+        # Check columns for fork opportunities
+        for i in range(3):
+            if [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(player) == 2 and [self.pos_list[i], self.pos_list[i+3], self.pos_list[i+6]].count(None) == 1:
+                fork_count += 1
+
+        # Check diagonals for fork opportunities
+        if [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(player) == 2 and [self.pos_list[0], self.pos_list[4], self.pos_list[8]].count(None) == 1:
+            fork_count += 1
+        if [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(player) == 2 and [self.pos_list[2], self.pos_list[4], self.pos_list[6]].count(None) == 1:
+            fork_count += 1
+
+        return fork_count >= 2
     
     @evaluation.setter
     def evaluation(self, value: int) -> None:
@@ -146,6 +114,33 @@ class Position:
             value (int): The evaluation value to set.
         """
         self._evaluation = value
+    
+    def check_win(self, player: int) -> bool:
+        """Check if the specified player has won the game.
+
+        Args:
+            player (int): The player to check for a win.
+
+        Returns:
+            bool: True if the player has won, False otherwise.
+        """
+        # Check rows
+        for i in range(0, self.pos_length, 3):
+            if self.pos_list[i] == player and self.pos_list[i] == self.pos_list[i+1] == self.pos_list[i+2]:
+                return True
+
+        # Check columns
+        for i in range(3):
+            if self.pos_list[i] == player and self.pos_list[i] == self.pos_list[i+3] == self.pos_list[i+6]:
+                return True
+
+        # Check diagonals
+        if self.pos_list[0] == player and self.pos_list[0] == self.pos_list[4] == self.pos_list[8]:
+            return True
+        if self.pos_list[2] == player and self.pos_list[2] == self.pos_list[4] == self.pos_list[6]:
+            return True
+
+        return False
     
     @property
     def children_length(self) -> int:
@@ -211,11 +206,19 @@ class Position:
             if self.pos_list[i] == None:
                 possible_moves.append(i)
         return possible_moves
+    
+    def get_empty_positions(self) -> int:
+        """Get the number of empty positions in the list.
+
+        Returns:
+            int: The number of empty positions.
+        """
+        return self.pos_list.count(None)
        
     def copy(self):
         """Create a copy of the current position."""
         return Position(self.pos_list.copy())
-    
+
     def check_game_status(self) -> Union[str, int, None]:
         """Check the status of the game.
 
