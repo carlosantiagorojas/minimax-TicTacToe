@@ -54,8 +54,8 @@ class Position:
         Show each child list of the position.
     __str__() -> str
         Print the current state of the position.
-        
     """
+    
     def __init__(self, pos_list: list) -> None:
         """Intialize a new position
 

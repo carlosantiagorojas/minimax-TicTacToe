@@ -3,6 +3,20 @@ from position import Position
 from typing import Tuple
 
 class AI:
+    """Computer (AI) of the TicTacToe
+    
+    Attributes:
+    ----------
+    position : Position
+        The current position of the game.
+        
+    Methods:
+    -------
+    make_ai_move() -> bool
+        Make a move in the TicTacToe based on the minimax algorithm result.
+    minimax(position: Position, depth: int, maximizingPlayer: bool) -> Tuple[float, Position]   
+        Minimax algorithm.
+    """
 
     def __init__(self, position: Position) -> None:
         """Initialize the AI with the current position in the game.
