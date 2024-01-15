@@ -20,6 +20,7 @@ class AI:
         print("\nMinimax result: ", best_move_value)    
         # self.position.print_pos_children()
         
+        # If there is no valid move
         if best_move is None:
             print("ERROR: No valid move found")
             return False

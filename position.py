@@ -3,7 +3,59 @@ from typing import List, Union
 
 
 class Position:
-
+    """Represent the state of a position in a TicTacToeGame
+    
+    Attributes
+    ----------
+    pos_list : list
+        The current position of the TicTacToe game.
+    pos_length : int
+        The length of the position list.
+    evaluation : int
+        The evaluation value of the position.
+    children : List["Position"]
+        The list of the children of the position.
+    game_over : bool
+        True if the game is finished, False otherwise.
+    winner_player : int
+        The winner of the game.
+        
+    Methods
+    -------
+    check_win(player: int) -> bool
+        Check if the specified player has won the game.
+    create_children(p_moves_index: list, ai_turn: bool) -> None
+        Create the children of the position.
+    get_children() -> List["Position"]
+        Get the children list.
+    get_possible_moves() -> list
+        Get the list of the possible moves.
+    get_empty_positions() -> int
+        Get the number of empty positions in the list.
+    copy()
+        Create a copy of the current position.
+    check_game_status() -> Union[str, int, None]
+        Check the status of the game.
+    check_rows() -> Union[int, None]    
+        Check the rows for a win.
+    check_columns() -> Union[int, None]
+        Check the columns for a win.
+    check_diagonal(index_start: int, step: int) -> Union[int, None]
+        Check if all elements in a diagonal are the same and not None.
+    check_tie() -> Union[str, None]
+        Check for a tie
+    print_pos_children() -> None    
+        Print all the possible moves of the current position like a TicTacToe.
+    print_tic_tac_toe() -> None 
+        Print the tic-tac-toe board to the console.
+    print_game_over() -> None
+        Print the winner of the game.
+    print_children() -> None
+        Show each child list of the position.
+    __str__() -> str
+        Print the current state of the position.
+        
+    """
     def __init__(self, pos_list: list) -> None:
         """Intialize a new position
 
@@ -12,6 +64,11 @@ class Position:
         
         Args:
             pos_list (list): The current position of the TicTacToe game.
+            pos_length (int): The length of the position list.
+            evaluation (int): The evaluation value of the position.
+            children (List["Position"]): The list of the children of the position.
+            game_over (bool): True if the game is finished, False otherwise.
+            winner_player (int): The winner of the game.
         """
         self.pos_list = pos_list
         self.pos_length = len(self.pos_list)
@@ -42,25 +99,25 @@ class Position:
     @property
     def evaluation(self) -> int:
         """Get the evaluation value of the position.
-    
+
         If the computer (player 0) has won, it adds 100 to the evaluation score. 
         If the human player (player 1) has won, it subtracts 100 from the evaluation score. 
-    
+
         The minimax algorithm uses this evaluation function to choose the move 
         that maximizes the potential score for the computer and minimizes the potential score 
         for the human player. 
-    
+
         By assigning a value of 100 for a computer win and -100 for a human player win, 
         the minimax algorithm ensures that it explores all possibilities to maximize 
         the computer's chances of winning and minimize the human player's chances. 
-    
+
         The simplicity of this evaluation is crucial for the efficiency of the minimax algorithm. 
         With only two possible outcomes (win or lose), the algorithm can efficiently 
         explore the entire game tree and make optimal decisions at each level. 
-    
+
         This guarantees that the computer will either win or force a draw, 
         making it a reliable strategy to avoid losing the game.        
-    
+
         Returns:
             int: The evaluation value of the position.
         """
@@ -69,7 +126,7 @@ class Position:
             eval_score += 100
         elif self.check_win(1):
             eval_score -= 100
-    
+
         return eval_score
     
     @evaluation.setter
@@ -336,6 +393,7 @@ class Position:
                     print(' ', end=' | ')
 
     def print_game_over(self) -> None:
+        """Print the winner of the game."""
         if self.winner_player == 1:
             print("\nGame finished X wins!")
         elif self.winner_player == 0:
