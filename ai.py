@@ -15,7 +15,8 @@ class AI:
     -------
     make_ai_move() -> bool
         Make a move in the TicTacToe based on the minimax algorithm result.
-    minimax(position: Position, depth: int, maximizingPlayer: bool) -> Tuple[float, Position]   
+    minimax(position: Position, depth: int, maximizingPlayer: bool, 
+            alpha: float, beta: float) -> Tuple[float, Position]
         Minimax algorithm.
     """
 
@@ -33,7 +34,7 @@ class AI:
         
         # Choose the best move
         best_move_value, best_move = self.minimax(self.position, self.position.get_empty_positions(), True)
-        print("\nMinimax result: ", best_move_value)    
+        # print("\nMinimax result: ", best_move_value)    
         # self.position.print_pos_children()
         
         # If there is no valid move
@@ -52,14 +53,16 @@ class AI:
         print("\nComputer move:")
         return True
     
-    def minimax(self, position: Position, depth: int, maximizingPlayer: bool) -> Tuple[float, Position]:
+    def minimax(self, position: Position, depth: int, maximizingPlayer: bool,
+                alpha: float = float('-inf'), beta: float = float('inf')) -> Tuple[float, Position]:
         """Minimax algorithm.
 
         Args:
             position (Position): The current position.
             depth (int): The depth of the tree.
             maximizingPlayer (bool): True if the Player is maximizing, False otherwise.
-
+            alpha (float): The best value that the maximizing player is assured of.
+            beta (float): The best value that the minimizing player is assured of.
         Returns:
             Tuple[float, Position]: The evaluation of the position and the position itself.
         """
@@ -79,12 +82,15 @@ class AI:
                 # child.print_tic_tac_toe()
                 child = position.copy()
                 child.pos_list[move] = 0
-                eval, _ = self.minimax(child, depth - 1, False)
+                eval, _ = self.minimax(child, depth - 1, False, alpha, beta)
                 # print("Self evaluation: ", eval)
                 if eval > maxEvaluation:
                     maxEvaluation = eval
                     maxChild = child
                     # print("Max evaluation: ", maxEvaluation)
+                alpha = max(alpha, eval)
+                if beta <= alpha:
+                    break
             return maxEvaluation, maxChild
         else:
             # print("""
@@ -98,10 +104,13 @@ class AI:
                 # child.print_tic_tac_toe()                
                 child = position.copy()
                 child.pos_list[move] = 1  # Make the move for the player
-                eval, _ = self.minimax(child, depth - 1, True)
+                eval, _ = self.minimax(child, depth - 1, True, alpha, beta)
                 # print("Self evaluation: ", child.evaluation)
                 if eval < minEvaluation:
                     minEvaluation = eval
                     minChild = child
                     # print("Min evaluation: ", minEvaluation)
+                beta = min(beta, eval)
+                if beta <= alpha:
+                    break
             return minEvaluation, minChild

@@ -120,7 +120,7 @@ class Position:
         """
         eval_score = 0
         if self.check_win(0):
-            eval_score += 100
+            eval_score += 100 + self.get_empty_positions()
         elif self.check_win(1):
             eval_score -= 100
 
@@ -218,7 +218,7 @@ class Position:
             if self.pos_list[i] == None:
                 possible_moves.append(i)
         return possible_moves
-    
+        
     def get_empty_positions(self) -> int:
         """Get the number of empty positions in the list.
 
