@@ -16,7 +16,7 @@ This is a simple and well documented implementation of the minimax algorithm wit
 
 ## The minimax algorithm
 
-The minimax algorithm uses a simpley evaluation function to choose the move that maximizes the potential score for the computer and minimizes the potential score for the human player. 
+The minimax algorithm uses a simple evaluation function to choose the move that maximizes the potential score for the computer and minimizes the potential score for the human player. 
 
 - Value of 100 for a computer win, plus the empty squares on the board.
 - Value of -100 for a human player win. 
