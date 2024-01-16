@@ -1,6 +1,6 @@
 # Minimax algorithm for TicTacToe
 
-This is a simple and well documented implementation of the minimax algorithm with alpha-beta-pruning for the TicTacToe game in Python. The game allows a player to play against a computer opponent using this basic AI algorithm, which guarantees that the computer will either **WIN** or force a **DRAW**, try if you can beat it!
+This is a simple and well documented implementation of the minimax algorithm with alpha-beta pruning for the TicTacToe game in Python. The game allows a player to play against a computer opponent using this basic AI algorithm, which guarantees that the computer will either **WIN** or force a **DRAW**, try if you can beat it!
 
 ## How to Play
 
