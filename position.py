@@ -97,23 +97,13 @@ class Position:
     def evaluation(self) -> int:
         """Get the evaluation value of the position.
 
-        If the computer (player 0) has won, it adds 100 to the evaluation score. 
+        If the computer (player 0) has won, it adds 100 to the evaluation score, 
+        plus the empty postions remaining. 
         If the human player (player 1) has won, it subtracts 100 from the evaluation score. 
 
         The minimax algorithm uses this evaluation function to choose the move 
         that maximizes the potential score for the computer and minimizes the potential score 
         for the human player. 
-
-        By assigning a value of 100 for a computer win and -100 for a human player win, 
-        the minimax algorithm ensures that it explores all possibilities to maximize 
-        the computer's chances of winning and minimize the human player's chances. 
-
-        The simplicity of this evaluation is crucial for the efficiency of the minimax algorithm. 
-        With only two possible outcomes (win or lose), the algorithm can efficiently 
-        explore the entire game tree and make optimal decisions at each level. 
-
-        This guarantees that the computer will either win or force a draw, 
-        making it a reliable strategy to avoid losing the game.        
 
         Returns:
             int: The evaluation value of the position.
