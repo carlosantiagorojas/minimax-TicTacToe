@@ -10,7 +10,7 @@ This is a simple and well documented implementation of the minimax algorithm wit
     python main.py
     ```
 
-![TicTacToe game](img/game_start.png)
+![TicTacToe game](images/game_start.png)
 
 2. Follow the on-screen instructions to make your moves. To make a move, enter the column and row numbers separated by a space when prompted. For example, entering `2 3` would place your 'X' in the second column and third row. Or if you want to quit the game enter `exit`.
 
